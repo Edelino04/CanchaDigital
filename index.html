@@ -665,7 +665,6 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
     <!-- Controles -->
     <div class="hdr-right">
       <button class="ico-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-      <button class="ico-btn" onclick="cambiarTorneo()" title="Cambiar torneo">⚽ Cambiar</button>
       <span id="adminBadge" style="display:none;background:var(--acc);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 8px;border-radius:4px;">ADMIN</span>
       <button id="loginBtn" class="ico-btn" onclick="openLoginModal()" title="Admin">🔐</button>
       <button id="usersBtn" class="ico-btn owner-only" onclick="openModal('modalUsuarios');renderUsuariosPanel()" style="display:none" title="Gestión usuarios">👥</button>
@@ -1893,8 +1892,8 @@ const CD_LOGO = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST
 const CAT_NAMES = { liga_alta:'Liga Alta', liga_media:'Liga Media', liga_baja_a:'Liga Baja A', liga_baja_b:'Liga Baja B' };
 let catOrderKeys = ['liga_alta','liga_media','liga_baja_a','liga_baja_b'];
 const CANCHAS = ['Villa Universidad','Isla Músala'];
-const LOS_ALAMITOS_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-e7edec0a-f7b1-42af-a61c-01c4b9225762.png';
-const SPLASH_BIG_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-af80c8bd-97cd-42d4-a7f0-e039cbadc79c.png';
+const LOS_ALAMITOS_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-93d2b04e-29fa-4280-9ead-8a8dfedfea6f.png';
+const SPLASH_BIG_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-bf375905-7a56-4436-b71c-f65ba993a4ad.png';
 TORNEO_NAMES.villa = 'TORNEO LOS ALAMITOS';
 delete TORNEO_NAMES.musala;
 TORNEO_LOGOS.villa = LOS_ALAMITOS_LOGO;
@@ -1906,6 +1905,17 @@ delete CAT_NAMES.liga_baja_b;
 catOrderKeys = ['liga_alta','liga_media'];
 const splashMainLogoOnLoad = document.querySelector('#splash > div img');
 if(splashMainLogoOnLoad) splashMainLogoOnLoad.src = SPLASH_BIG_LOGO;
+const hdrBrandLogoOnLoad = document.querySelector('.hdr-shield img');
+if(hdrBrandLogoOnLoad) hdrBrandLogoOnLoad.src = SPLASH_BIG_LOGO;
+const splashTorneoCardsOnLoad = document.querySelectorAll('#splash [onclick^="selectTorneo"]');
+splashTorneoCardsOnLoad.forEach((card, idx)=>{
+  if(idx===0){
+    const logoEl = card.querySelector('img');
+    if(logoEl) logoEl.src = LOS_ALAMITOS_LOGO;
+    return;
+  }
+  card.remove();
+});
 
 // ══════════════════════════════════════
 //  MODAL & TOAST (defined early so boot can use them)
