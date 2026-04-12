@@ -2963,6 +2963,185 @@ const todayISO = () => {
 };
 const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const slugifyBasic = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/tb8luwfk1kkd3sdeoxif163k4vi7m4p1';
+const MAKE_TORNEO_NAME = 'Torneo Los Alamitos';
+const MAKE_CIUDAD_NAME = 'Culiacán, Sinaloa';
+const MAKE_RESULT_STALE_MS = 120000;
+
+function getCategoriaNombre(catKey){
+  return CAT_NAMES[catKey] || catKey || currentCat || '';
+}
+
+function getPartidoEquipoNombre(partido, side){
+  if(!partido) return '';
+  const isLocal = side === 'local';
+  const directName = String(isLocal ? (partido.localNombre || partido.local) : (partido.visitaNombre || partido.visita) || '').trim();
+  if(directName) return directName;
+  const ref = findEquipoMatchRef(isLocal ? partido.local : partido.visita, partido.torneo || currentTorneo, partido.cat || currentCat);
+  return String(ref?.nombre || '').trim();
+}
+
+function normalizarResultadoParaMake(partido){
+  if(!partido) return null;
+  const status = String(partido.status || '').toLowerCase();
+  if(status !== 'terminado') return null;
+  const equipoA = getPartidoEquipoNombre(partido,'local');
+  const equipoB = getPartidoEquipoNombre(partido,'visita');
+  if(!equipoA || !equipoB || equipoA === equipoB) return null;
+  return {
+    equipoA,
+    equipoB,
+    golesA: Number(partido.gL) || 0,
+    golesB: Number(partido.gV) || 0,
+    categoria: getCategoriaNombre(partido.cat),
+    torneo: MAKE_TORNEO_NAME,
+    ciudad: MAKE_CIUDAD_NAME
+  };
+}
+
+function buildResultadoSignature(payload){
+  if(!payload) return '';
+  return [
+    payload.equipoA,
+    payload.equipoB,
+    payload.golesA,
+    payload.golesB,
+    payload.categoria,
+    payload.torneo,
+    payload.ciudad
+  ].join('|');
+}
+
+function buildResultadoWhatsAppText(payload){
+  if(!payload) return '';
+  return `🔥 Resultado: ${payload.equipoA} ${payload.golesA}-${payload.golesB} ${payload.equipoB}\n🏆 ${payload.categoria}\n📍 ${payload.ciudad}`;
+}
+
+function buildResultadoWhatsAppLink(payload){
+  const text = buildResultadoWhatsAppText(payload);
+  return text ? `https://wa.me/?text=${encodeURIComponent(text)}` : '';
+}
+
+async function enviarResultadoAMake(data){
+  try{
+    console.log('[Make] Enviando resultado...', data);
+    const response = await fetch(MAKE_WEBHOOK_URL, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body:JSON.stringify(data)
+    });
+    const responseText = await response.text().catch(()=> '');
+    if(!response.ok) throw new Error(`Webhook respondió ${response.status}${responseText ? `: ${responseText.slice(0,200)}` : ''}`);
+    console.log('[Make] Resultado enviado correctamente');
+    return {
+      ok:true,
+      whatsappText: buildResultadoWhatsAppText(data),
+      whatsappLink: buildResultadoWhatsAppLink(data)
+    };
+  }catch(error){
+    console.log('[Make] Error enviando resultado', error);
+    throw error;
+  }
+}
+
+async function reservarEnvioResultado(partidoKey, signature){
+  if(!db || !partidoKey || !signature) return null;
+  const reservationId = `${Date.now()}_${Math.random().toString(36).slice(2,10)}`;
+  try{
+    const tx = await db.ref(`partidos/${partidoKey}/makeSync`).transaction(current=>{
+      const now = Date.now();
+      const next = current && typeof current === 'object' ? current : {};
+      const alreadySent = next.lastSignature === signature && next.status === 'sent';
+      const samePendingActive = next.pendingSignature === signature && next.status === 'sending' && (now - (next.updatedAt || 0) < MAKE_RESULT_STALE_MS);
+      if(alreadySent || samePendingActive) return;
+      return {
+        ...next,
+        status:'sending',
+        pendingSignature:signature,
+        pendingBy:reservationId,
+        updatedAt:now,
+        error:null
+      };
+    });
+    const snapshot = tx?.snapshot?.val() || null;
+    const reserved = !!(tx?.committed && snapshot?.pendingSignature === signature && snapshot?.pendingBy === reservationId && snapshot?.status === 'sending');
+    if(!reserved){
+      console.log('[Make] Resultado omitido por duplicado o envío ya reservado', { partidoKey, signature });
+      return null;
+    }
+    return { reservationId, ref: db.ref(`partidos/${partidoKey}/makeSync`) };
+  }catch(error){
+    console.log('[Make] Error reservando envío a Make', error);
+    return null;
+  }
+}
+
+async function finalizarEnvioResultado(syncRef, signature, reservationId, patch){
+  if(!syncRef || !signature || !reservationId) return false;
+  try{
+    const tx = await syncRef.transaction(current=>{
+      const next = current && typeof current === 'object' ? current : {};
+      if(next.pendingSignature !== signature || next.pendingBy !== reservationId) return;
+      return {
+        ...next,
+        ...patch,
+        updatedAt:Date.now()
+      };
+    });
+    return !!tx?.committed;
+  }catch(error){
+    console.log('[Make] Error actualizando estado de sincronización', error);
+    return false;
+  }
+}
+
+async function sincronizarResultadoPartidoConMake(partidoKey, partidoData){
+  let reservation = null;
+  let payload = null;
+  let signature = '';
+  try{
+    payload = normalizarResultadoParaMake(partidoData);
+    if(!payload || !partidoKey) return { sent:false, reason:'not-ready' };
+    signature = buildResultadoSignature(payload);
+    reservation = await reservarEnvioResultado(partidoKey, signature);
+    if(!reservation) return { sent:false, reason:'duplicate' };
+    const result = await enviarResultadoAMake(payload);
+    await finalizarEnvioResultado(reservation.ref, signature, reservation.reservationId, {
+      status:'sent',
+      lastSignature:signature,
+      pendingSignature:null,
+      pendingBy:null,
+      sentAt:Date.now(),
+      error:null,
+      lastPayload:payload,
+      lastWhatsAppText:result.whatsappText,
+      lastWhatsAppLink:result.whatsappLink
+    });
+    console.log('[Make] Texto listo para WhatsApp:', result.whatsappText);
+    return { sent:true, payload, ...result };
+  }catch(error){
+    console.log('[Make] Falló la sincronización del resultado', error);
+    if(db && partidoKey && signature && reservation?.ref && reservation?.reservationId){
+      await finalizarEnvioResultado(reservation.ref, signature, reservation.reservationId, {
+        status:'error',
+        pendingSignature:null,
+        pendingBy:null,
+        error:String(error?.message || error),
+        errorAt:Date.now()
+      });
+    }
+    return { sent:false, reason:'error', error };
+  }
+}
+
+async function intentarSincronizarResultado(partidoKey, partidoData){
+  try{
+    return await sincronizarResultadoPartidoConMake(partidoKey, partidoData);
+  }catch(error){
+    console.log('[Make] Error no controlado al sincronizar resultado', error);
+    return { sent:false, reason:'error', error };
+  }
+}
 
 function filteredParts(){ return getParts().filter(p => p.torneo===currentTorneo && p.cat===currentCat); }
 
@@ -3587,19 +3766,38 @@ function deletePartido(key){
   showToast('Partido eliminado','tr');
 }
 
-function guardarMarcadorEdit(){
+async function guardarMarcadorEdit(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
   const gL=parseInt(document.getElementById('edit_gL')?.value)||0;
   const gV=parseInt(document.getElementById('edit_gV')?.value)||0;
-  db.ref(`partidos/${activePartidoKey}`).update({gL,gV});
-  showToast('Marcador actualizado','tg');
+  const updatedAt=Date.now();
+  try{
+    await db.ref(`partidos/${activePartidoKey}`).update({gL,gV,updatedAt});
+    await intentarSincronizarResultado(activePartidoKey,{...p,gL,gV,updatedAt});
+    showToast('Marcador actualizado','tg');
+  }catch(error){
+    console.log('[Make] Error al guardar marcador editado', error);
+    showToast('Error al actualizar marcador','tr');
+  }
 }
 
-function eliminarGolEspecifico(partKey, golKey, equipo){
+async function eliminarGolEspecifico(partKey, golKey, equipo){
   const p=C.partidos[partKey]; if(!p)return;
-  db.ref(`partidos/${partKey}/goles/${golKey}`).remove();
   const campo=equipo==='local'?'gL':'gV';
-  db.ref(`partidos/${partKey}/${campo}`).set(Math.max(0,(p[campo]||1)-1));
-  showToast('Gol eliminado','tr');
+  const nextScore=Math.max(0,(p[campo]||1)-1);
+  const updatedAt=Date.now();
+  try{
+    const updates={};
+    updates[`partidos/${partKey}/goles/${golKey}`]=null;
+    updates[`partidos/${partKey}/${campo}`]=nextScore;
+    updates[`partidos/${partKey}/updatedAt`]=updatedAt;
+    await db.ref().update(updates);
+    await intentarSincronizarResultado(partKey,{...p,[campo]:nextScore,updatedAt});
+    showToast('Gol eliminado','tr');
+  }catch(error){
+    console.log('[Make] Error al eliminar gol específico', error);
+    showToast('Error al eliminar gol','tr');
+  }
 }
 
 function reabrirPartido(key){
@@ -3920,6 +4118,157 @@ function savePartido(){
 // ══════════════════════════════════════
 //  PAGO ARBITRAJE
 // ══════════════════════════════════════
+// Mantiene el webhook de Make integrado sin alterar la UI existente.
+async function guardarMarcadorEdit(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const gL=parseInt(document.getElementById('edit_gL')?.value)||0;
+  const gV=parseInt(document.getElementById('edit_gV')?.value)||0;
+  const updatedAt=Date.now();
+  try{
+    await db.ref(`partidos/${activePartidoKey}`).update({gL,gV,updatedAt});
+    await intentarSincronizarResultado(activePartidoKey,{...p,gL,gV,updatedAt});
+    showToast('Marcador actualizado','tg');
+  }catch(error){
+    console.log('[Make] Error al guardar marcador editado', error);
+    showToast('Error al actualizar marcador','tr');
+  }
+}
+
+async function eliminarGolEspecifico(partKey, golKey, equipo){
+  const p=C.partidos[partKey]; if(!p)return;
+  const campo=equipo==='local'?'gL':'gV';
+  const nextScore=Math.max(0,(p[campo]||1)-1);
+  const updatedAt=Date.now();
+  try{
+    const updates={};
+    updates[`partidos/${partKey}/goles/${golKey}`]=null;
+    updates[`partidos/${partKey}/${campo}`]=nextScore;
+    updates[`partidos/${partKey}/updatedAt`]=updatedAt;
+    await db.ref().update(updates);
+    await intentarSincronizarResultado(partKey,{...p,[campo]:nextScore,updatedAt});
+    showToast('Gol eliminado','tr');
+  }catch(error){
+    console.log('[Make] Error al eliminar gol específico', error);
+    showToast('Error al eliminar gol','tr');
+  }
+}
+
+async function confirmGol(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const side=document.getElementById('gol_equipo').value;
+  const manual=document.getElementById('gol_manual').value.trim();
+  const fromList=document.getElementById('gol_jugador').value;
+  const jugador=manual||fromList;
+  if(!jugador){showToast('Indica el jugador','ta');return;}
+  const field=side==='local'?'gL':'gV';
+  const nextScore=(p[field]||0)+1;
+  const updatedAt=Date.now();
+  const golRef=db.ref(`partidos/${activePartidoKey}/goles`).push();
+  try{
+    const updates={};
+    updates[`partidos/${activePartidoKey}/${field}`]=nextScore;
+    updates[`partidos/${activePartidoKey}/goles/${golRef.key}`]={jugador,equipo:side,ts:updatedAt};
+    updates[`partidos/${activePartidoKey}/updatedAt`]=updatedAt;
+    await db.ref().update(updates);
+    await intentarSincronizarResultado(activePartidoKey,{...p,[field]:nextScore,updatedAt});
+    closeModal('modalGol');
+    showToast(`⚽ GOL de ${jugador}!`,'tg');
+  }catch(error){
+    console.log('[Make] Error al registrar gol', error);
+    showToast('Error al registrar gol','tr');
+  }
+}
+
+async function quitarGol(side){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const field=side==='local'?'gL':'gV';
+  const cur=p[field]||0; if(cur<=0)return;
+  const goles=p.goles?Object.entries(p.goles):[];
+  const last=goles.filter(([,g])=>g.equipo===side).sort((a,b)=>b[1].ts-a[1].ts)[0];
+  const updatedAt=Date.now();
+  try{
+    const updates={};
+    if(last) updates[`partidos/${activePartidoKey}/goles/${last[0]}`]=null;
+    updates[`partidos/${activePartidoKey}/${field}`]=cur-1;
+    updates[`partidos/${activePartidoKey}/updatedAt`]=updatedAt;
+    await db.ref().update(updates);
+    await intentarSincronizarResultado(activePartidoKey,{...p,[field]:cur-1,updatedAt});
+  }catch(error){
+    console.log('[Make] Error al quitar gol', error);
+    showToast('Error al quitar gol','tr');
+  }
+}
+
+async function terminarPartido(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const elapsed=p.timerRunning?(p.elapsed||0)+(Date.now()-(p.timerStart||Date.now()))/1000:(p.elapsed||0);
+  const updatedAt=Date.now();
+  clearInterval(timers[activePartidoKey]);
+  try{
+    await db.ref(`partidos/${activePartidoKey}`).update({status:'terminado',timerRunning:false,elapsed,updatedAt});
+    await intentarSincronizarResultado(activePartidoKey,{...p,status:'terminado',timerRunning:false,elapsed,updatedAt});
+    closeModal('modalPartidoDetail');
+    showToast('🏁 Partido terminado','tg');
+  }catch(error){
+    console.log('[Make] Error al terminar partido', error);
+    showToast('Error al terminar partido','tr');
+  }
+}
+
+async function savePartido(){
+  const localKey=document.getElementById('mp_local').value;
+  const visitaKey=document.getElementById('mp_visita').value;
+  const eqL=localKey?C.equipos[localKey]:null;
+  const eqV=visitaKey?C.equipos[visitaKey]:null;
+  if(!eqL||!eqV){showToast('Selecciona ambos equipos','ta');return;}
+  const torneo=document.getElementById('mp_torneo').value;
+  const cat=document.getElementById('mp_cat').value;
+  const arbId=document.getElementById('mp_arbitro').value||null;
+  const arb=arbId?C.arbitros[arbId]:null;
+  const key=document.getElementById('mp_key').value;
+  const porteroLocal=document.getElementById('mp_portero_local').value.trim();
+  const porteroVisita=document.getElementById('mp_portero_visita').value.trim();
+  const updatedAt=Date.now();
+  const data={
+    torneo, cat,
+    local:localKey, localNombre:eqL.nombre,
+    visita:visitaKey, visitaNombre:eqV.nombre,
+    cancha:document.getElementById('mp_cancha').value,
+    arbId, arbitroNombre:arb?.nombre||null,
+    fecha:document.getElementById('mp_fecha').value,
+    horaIni:document.getElementById('mp_hora_ini').value,
+    horaFin:document.getElementById('mp_hora_fin').value||null,
+    gL:parseInt(document.getElementById('mp_gL').value)||0,
+    gV:parseInt(document.getElementById('mp_gV').value)||0,
+    porteroLocal:porteroLocal||null,
+    porteroVisita:porteroVisita||null,
+    status:document.getElementById('mp_status').value,
+    costArb:parseInt(document.getElementById('mp_costo').value)||250,
+    alineLocal:getLineup('local'),
+    alineVisita:getLineup('visita'),
+    updatedAt
+  };
+  try{
+    let partidoKey=key;
+    let partidoData={...data};
+    if(key){
+      await db.ref(`partidos/${key}`).update(data);
+      partidoData={...(C.partidos[key]||{}),...data};
+    }else{
+      const partidoRef=db.ref('partidos').push();
+      partidoKey=partidoRef.key;
+      partidoData={...data,goles:{},arbPago:{local:{ef:0,tr:0,pp:0},visita:{ef:0,tr:0,pp:0}},creadoAt:updatedAt};
+      await partidoRef.set(partidoData);
+    }
+    await intentarSincronizarResultado(partidoKey,partidoData);
+    closeModal('modalPartido');
+    showToast(key?'Partido actualizado':'Partido registrado','tg');
+  }catch(error){
+    console.log('[Make] Error al guardar partido', error);
+    showToast('Error al guardar partido','tr');
+  }
+}
+
 function initPagoArb(){
   const p=C.partidos[activePartidoKey]; if(!p)return;
   document.getElementById('pa_key').value=activePartidoKey;
