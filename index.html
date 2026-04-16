@@ -219,7 +219,7 @@ textarea.fi{resize:vertical;min-height:60px;}
 .tabla tbody tr:last-child td{border-bottom:none;}
 .tabla tbody td.tal{text-align:left;padding-left:14px;}
 .pos-num{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:900;}
-.p1{color:var(--gold)}.p2,.p3,.pr{color:var(--muted)}
+.p1,.p2,.p3,.pr{color:var(--muted)}
 .tc{display:flex;align-items:center;gap:10px;min-width:0;}
 .tc-logo{width:30px;height:30px;object-fit:cover;border-radius:10px;}
 .tc-ph{width:30px;height:30px;background:var(--card2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;}
@@ -473,14 +473,30 @@ border:1px solid #dbe4ee;border-radius:30px;padding:18px 18px 16px;box-shadow:0 
 .insight-box.alert .insight-title{color:var(--red);}
 .insight-text{font-size:11px;color:var(--text2);line-height:1.6;font-weight:500;}
 
-/* ═══ GOLEADORES ═══ */
-.gol-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+/* ═══ GOLEADORES — PREMIUM RANKING ═══ */
+.ranking-container{overflow:hidden;border-radius:22px;border:1.5px solid rgba(174,192,222,.7);background:linear-gradient(180deg,#ffffff,#f7fbff);box-shadow:0 16px 36px rgba(37,84,212,.09);}
+.keeper-ranking{border-color:rgba(14,165,233,.25);background:linear-gradient(180deg,#f0f9ff,#e0f2fe);box-shadow:0 16px 36px rgba(14,165,233,.09);}
+.gol-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(174,192,222,.35);position:relative;transition:background .18s;}
 .gol-row:last-child{border-bottom:none;}
-.gol-pos{font-family:'Bebas Neue',sans-serif;font-size:22px;width:26px;text-align:center;}
-.gol-info{flex:1;}
-.gol-player{font-size:13px;font-weight:800;}
-.gol-team{font-size:10px;color:var(--muted);font-weight:600;}
-.gol-count{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--acc);}
+.gol-row:hover{background:rgba(37,84,212,.03);}
+.gol-row.rank-1{background:linear-gradient(90deg,rgba(202,138,4,.08),rgba(255,255,255,.6) 60%);border-left:4px solid #ca8a04;}
+.gol-row.rank-2{background:linear-gradient(90deg,rgba(148,163,184,.12),rgba(255,255,255,.6) 60%);border-left:4px solid #94a3b8;}
+.gol-row.rank-3{background:linear-gradient(90deg,rgba(180,83,9,.09),rgba(255,255,255,.6) 60%);border-left:4px solid #b45309;}
+/* position badge */
+.gol-pos{position:relative;width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Bebas Neue',sans-serif;font-size:17px;font-weight:900;letter-spacing:.5px;}
+.gol-pos.p1{background:linear-gradient(135deg,#fbbf24,#ca8a04);color:#fff;box-shadow:0 4px 14px rgba(202,138,4,.45);font-size:16px;}
+.gol-pos.p1::after{content:'👑';position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:12px;}
+.gol-pos.p2{background:linear-gradient(135deg,#e2e8f0,#94a3b8);color:#fff;box-shadow:0 4px 10px rgba(148,163,184,.4);font-size:16px;}
+.gol-pos.p3{background:linear-gradient(135deg,#fed7aa,#b45309);color:#fff;box-shadow:0 4px 10px rgba(180,83,9,.35);font-size:16px;}
+.gol-pos.pr{background:var(--card2);border:1.5px solid var(--border);color:var(--muted);font-size:15px;}
+.gol-info{flex:1;min-width:0;}
+.gol-player{font-size:13px;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gol-team{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gol-count{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--acc);line-height:1;flex-shrink:0;}
+.gol-row.rank-1 .gol-count{color:#ca8a04;}
+.gol-row.rank-2 .gol-count{color:#64748b;}
+.gol-row.rank-3 .gol-count{color:#b45309;}
+.gol-count-lbl{font-size:9px;font-weight:800;letter-spacing:1px;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1;}
 
 /* ═══ MODAL ═══ */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;}
@@ -731,18 +747,18 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 .share-mini-chip{padding:6px 10px;border-radius:999px;background:#f8fafc;border:1px solid #dbe4ee;font-size:10px;font-weight:800;letter-spacing:.5px;color:#334155;}
 .share-board{background:#fff;border:1px solid #dbe4ee;border-radius:30px;overflow:hidden;position:relative;z-index:1;box-shadow:0 10px 24px rgba(15,23,42,.06);}
 .share-board-head,.share-board-row{display:grid;gap:10px;align-items:center;padding:16px 18px;}
-.share-board-head{background:linear-gradient(180deg,#f3f7fc,#fbfdff);font-size:11px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:#64748b;}
-.share-board-row{border-top:1px solid #edf2f7;font-size:14px;font-weight:700;color:#0f172a;}
+.share-board-head{background:linear-gradient(180deg,#f3f7fc,#fbfdff);font-size:13px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:#64748b;}
+.share-board-row{border-top:1px solid #edf2f7;font-size:17px;font-weight:700;color:#0f172a;}
 .share-board-row.top1{background:#fff8e8;}
 .share-board-row.top2{background:#fff4ec;}
 .share-board-row.top3{background:#fff9f3;}
-.share-pos{font-family:'Bebas Neue',sans-serif;font-size:30px;text-align:center;color:#1e3a8a;}
+.share-pos{font-family:'Bebas Neue',sans-serif;font-size:34px;text-align:center;color:#1e3a8a;}
 .share-board-row.top1 .share-pos,.share-board-row.top1 .share-team-name{color:#8a5a00;}
 .share-team-wrap{display:flex;align-items:center;gap:10px;min-width:0;}
 .share-team-wrap img{width:34px;height:34px;object-fit:cover;border-radius:10px;background:#fff;border:1px solid #dbe4ee;}
-.share-team-name{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.share-team-sub{font-size:11px;color:#64748b;font-weight:700;margin-top:3px;}
-.share-points{font-family:'Bebas Neue',sans-serif;font-size:34px;text-align:right;color:#1d4ed8;}
+.share-team-name{font-size:20px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.share-team-sub{display:none;}
+.share-points{font-family:'Bebas Neue',sans-serif;font-size:38px;text-align:center;color:#1d4ed8;}
 .share-footer{margin-top:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;position:relative;z-index:1;}
 .share-footer-note{font-size:13px;color:#475569;font-weight:700;line-height:1.5;}
 .share-footer-tag{padding:10px 14px;border-radius:18px;background:#fff;border:1px solid #d6dfeb;font-size:10px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:#1e3a8a;}
@@ -787,10 +803,8 @@ border:1px solid #dde6ef;border-radius:34px;padding:22px 28px 26px;box-shadow:0 
 .share-finalissima-only-vs span{font-size:15px;font-weight:700;color:#334155;margin-top:4px;}
 
 .cup-preview{position:relative;overflow:hidden;border-radius:30px;padding:22px;background:
-  radial-gradient(circle at top right,rgba(37,84,212,.12),transparent 34%),
-  radial-gradient(circle at bottom left,rgba(46,168,60,.1),transparent 26%),
-  linear-gradient(180deg,#ffffff 0%,#f7fbff 58%,#ffffff 100%);
-border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
+  linear-gradient(180deg,#eef4ff 0%,#f7faff 55%,#eef9f0 100%);
+border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
 .cup-preview::before{content:'';position:absolute;left:20px;right:20px;top:0;height:4px;border-radius:999px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);}
 .cup-preview-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;position:relative;z-index:1;}
 .cup-preview-copy{max-width:560px;}
@@ -1132,13 +1146,13 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
     <div class="sl"><span style="font-size:9px;color:var(--muted);font-weight:600;margin-left:8px">Top 10</span></div>
     <button class="btn btn-out btn-sm" onclick="compartirGoleadores()" title="Compartir goleadores">📤</button>
   </div>
-  <div class="card" id="goleadoresCaptura"><div id="goleadoresList"><div class="empty"><span class="empty-icon">🥅</span>Sin goles registrados</div></div></div>
+  <div class="ranking-container" id="goleadoresCaptura"><div id="goleadoresList"><div class="empty"><span class="empty-icon">🥅</span>Sin goles registrados</div></div></div>
   <div class="sh" style="margin-top:18px">
     <div class="st">🧤 Mejores Porteros</div>
     <div class="sl"><span style="font-size:9px;color:var(--muted);font-weight:600;margin-left:8px">Top 10</span></div>
     <button class="btn btn-out btn-sm" onclick="compartirPorteros()" title="Compartir porteros">📤</button>
   </div>
-  <div class="card keeper-card" id="porterosCaptura"><div id="porterosList"><div class="empty"><span class="empty-icon">🧤</span>Asigna un portero a cada equipo para generar el ranking</div></div></div>
+  <div class="ranking-container keeper-ranking" id="porterosCaptura"><div id="porterosList"><div class="empty"><span class="empty-icon">🧤</span>Asigna un portero a cada equipo para generar el ranking</div></div></div>
 </div>
 
 <!-- ═══════ ÚLTIMOS PARTIDOS ═══════ -->
@@ -1146,8 +1160,14 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
   <div id="adminAddPartido" style="display:none;margin-bottom:14px">
     <button class="btn btn-g btn-full" onclick="openModal('modalPartido');resetPartidoForm()">+ REGISTRAR PARTIDO</button>
   </div>
-  <!-- Date filter -->
+  <!-- Filters -->
   <div class="card" style="padding:11px 13px;margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;white-space:nowrap">🏆 Equipo:</span>
+      <select class="fi" id="partidos_equipo_filter" style="flex:1;min-width:130px;padding:7px 10px;font-size:12px" onchange="renderPartidos()">
+        <option value="">Todos los equipos</option>
+      </select>
+    </div>
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
       <span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;white-space:nowrap">📅 Ver desde:</span>
       <input class="fi" id="partidos_fecha_desde" type="date" style="flex:1;min-width:130px;padding:7px 10px;font-size:12px" onchange="renderPartidos()"/>
@@ -3237,6 +3257,7 @@ function showPage(p, btn){
   if(p==='calendario') initCalendario();
   if(p==='historial') renderHistorial();
   if(p==='mercadotecnia') renderMercadotecnia();
+  if(p==='partidos'){ populatePartidosTeamFilter(); renderPartidos(); }
   // reglamento no necesita render
 }
 
@@ -3250,6 +3271,7 @@ function selectCat(cat, btn){
   }
   renderTabla();
   renderGoleadores();
+  populatePartidosTeamFilter();
   renderPartidos();
   renderEquiposPage();
   if(isAdmin) scheduleMarketingAutoSync('categoria');
@@ -3991,10 +4013,14 @@ function renderGoleadores(){
   }
   el.innerHTML=sorted.map((g,i)=>{
     const pos=i+1, cls=pos===1?'p1':pos===2?'p2':pos===3?'p3':'pr';
-    return `<div class="gol-row">
+    const rankCls=pos===1?'rank-1':pos===2?'rank-2':pos===3?'rank-3':'';
+    return `<div class="gol-row ${rankCls}">
       <div class="gol-pos ${cls}">${pos}</div>
-      <div class="gol-info"><div class="gol-player">${g.jugador}</div><div class="gol-team">${g.equipo}</div></div>
-      <div class="gol-count">${g.goles}</div>
+      <div class="gol-info"><div class="gol-player">${g.jugador}</div><div class="gol-team">⚽ ${g.equipo}</div></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0">
+        <div class="gol-count">${g.goles}</div>
+        <div class="gol-count-lbl">goles</div>
+      </div>
     </div>`;
   }).join('');
   renderPorteros();
@@ -4009,20 +4035,25 @@ function renderPorteros(){
   }
   el.innerHTML=top.map((g,i)=>{
     const pos=i+1, cls=pos===1?'p1':pos===2?'p2':pos===3?'p3':'pr';
+    const rankCls=pos===1?'rank-1':pos===2?'rank-2':pos===3?'rank-3':'';
     if(!isAdmin){
-      return `<div class="gol-row keeper-row">
+      return `<div class="gol-row keeper-row ${rankCls}">
         <div class="gol-pos ${cls}">${pos}</div>
         <div class="gol-info">
           <div class="gol-player">${escapeHtml(g.portero)}</div>
-          <div class="gol-team">${escapeHtml(g.equipo)}</div>
+          <div class="gol-team">🧤 ${escapeHtml(g.equipo)}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0">
+          <div class="keeper-main-val">${g.porteriasImbatidas}</div>
+          <div class="gol-count-lbl">imbatidas</div>
         </div>
       </div>`;
     }
-    return `<div class="gol-row keeper-row">
+    return `<div class="gol-row keeper-row ${rankCls}">
       <div class="gol-pos ${cls}">${pos}</div>
       <div class="gol-info">
         <div class="gol-player">${escapeHtml(g.portero)}</div>
-        <div class="gol-team">${escapeHtml(g.equipo)}</div>
+        <div class="gol-team">🧤 ${escapeHtml(g.equipo)}</div>
         <div class="keeper-stats">
           <span class="keeper-chip">🧤 ${g.porteriasImbatidas} imbatidas</span>
           <span class="keeper-chip alt">📉 ${g.promedioGC.toFixed(2)} GC/PJ</span>
@@ -4031,9 +4062,9 @@ function renderPorteros(){
         </div>
         ${isAdmin?`<div class="keeper-admin-eq">Orden del ranking: más porterías imbatidas, menor promedio de goles recibidos y menos goles totales. Ecuación usada: ${escapeHtml(g.equation)}</div>`:''}
       </div>
-      <div class="keeper-main-metric">
+      <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;min-width:54px">
         <div class="keeper-main-val">${g.porteriasImbatidas}</div>
-        <div class="keeper-main-lbl">PI</div>
+        <div class="gol-count-lbl">imbatidas</div>
       </div>
     </div>`;
   }).join('');
@@ -4050,21 +4081,33 @@ function setFechaUltimos(dias){
   renderPartidos();
 }
 
+function populatePartidosTeamFilter(){
+  const sel=document.getElementById('partidos_equipo_filter'); if(!sel)return;
+  const currentVal=sel.value;
+  const teams=new Set();
+  filteredParts().forEach(p=>{
+    if(p.localNombre||p.local) teams.add(p.localNombre||p.local);
+    if(p.visitaNombre||p.visita) teams.add(p.visitaNombre||p.visita);
+  });
+  const sorted=[...teams].sort((a,b)=>a.localeCompare(b));
+  sel.innerHTML=`<option value="">Todos los equipos</option>`+sorted.map(t=>`<option value="${t}"${t===currentVal?'selected':''}>${t}</option>`).join('');
+}
+
 function renderPartidos(){
   const el=document.getElementById('partidosList'); if(!el)return;
-  // Date filter — default 3 days
+  // Date filter — default empty (show all)
   const filterEl=document.getElementById('partidos_fecha_desde');
-  if(filterEl&&!filterEl.value){
-    const d=new Date(); d.setDate(d.getDate()-3);
-    filterEl.value=d.toISOString().split('T')[0];
-  }
   const desdeDate=filterEl?.value||null;
+  // Team filter
+  const teamFilterEl=document.getElementById('partidos_equipo_filter');
+  const teamFilter=teamFilterEl?.value||'';
   let parts=filteredParts().sort((a,b)=>{
     const ad=(b.fecha||'')+(b.horaIni||''); const bd=(a.fecha||'')+(a.horaIni||'');
     return ad.localeCompare(bd);
   });
   if(desdeDate) parts=parts.filter(p=>(p.fecha||'')>=desdeDate);
-  if(!parts.length){el.innerHTML=`<div class="empty"><span class="empty-icon">⚽</span>Sin partidos${desdeDate?' desde '+fmtDate(desdeDate):' en esta categoría'}</div>`;return;}
+  if(teamFilter) parts=parts.filter(p=>(p.localNombre||p.local||'')===teamFilter||(p.visitaNombre||p.visita||'')===teamFilter);
+  if(!parts.length){el.innerHTML=`<div class="empty"><span class="empty-icon">⚽</span>Sin partidos${desdeDate?' desde '+fmtDate(desdeDate):teamFilter?' de '+teamFilter:' en esta categoría'}</div>`;return;}
   el.innerHTML=parts.map(p=>{
     const eqL=getEqs().find(e=>e.nombre===(p.localNombre||p.local)&&e.torneo===currentTorneo&&e.cat===currentCat);
     const eqV=getEqs().find(e=>e.nombre===(p.visitaNombre||p.visita)&&e.torneo===currentTorneo&&e.cat===currentCat);
