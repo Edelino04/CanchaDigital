@@ -3585,6 +3585,10 @@ function uploadImg(inputId, prevId, lblId, maxPx){
 // ══════════════════════════════════════
 function buildTablaData(){
   const teams = {};
+  // Pre-seed all registered teams for this torneo+cat with 0 stats
+  getEqs().filter(e=>e.torneo===currentTorneo&&e.cat===currentCat&&e.nombre).forEach(e=>{
+    if(!teams[e.nombre]) teams[e.nombre]={nombre:e.nombre,logo:e.logo||null,pj:0,g:0,e:0,pe:0,gf:0,gc:0,pts:0,forma:[]};
+  });
   const parts = filteredParts().filter(p=>p.status==='terminado');
   parts.forEach(p=>{
     [p.localNombre||p.local, p.visitaNombre||p.visita].forEach(t=>{
@@ -3932,7 +3936,7 @@ function renderTabla(){
   renderAdminFinalissimaPanel(data, cupData);
 
   if(!data.length){
-    body.innerHTML='<tr><td colspan="11" class="tabla-empty">Sin partidos terminados en esta categoría</td></tr>';
+    body.innerHTML='<tr><td colspan="11" class="tabla-empty">Sin equipos registrados en esta categoría</td></tr>';
     const mobElEmpty = document.getElementById('tablaBodyMobile');
     if(mobElEmpty){ mobElEmpty.style.display='none'; body.closest('table').style.display=''; }
     return;
@@ -6169,7 +6173,7 @@ let compartirTextoActual = '';
 
 function compartirTabla(){
   const tablaData=buildTablaData();
-  if(!tablaData.length){showToast('Sin datos en la tabla','ta');return;}
+  if(!tablaData.length){showToast('Sin equipos registrados en esta categoría','ta');return;}
   openStatsShare('tabla');
 }
 
@@ -6360,6 +6364,31 @@ function buildShareListRows(items){
       </div>
     </div>
   `).join('');
+}
+
+function buildShareRankingRows(items){
+  return items.map((item)=>{
+    const pos = item.pos;
+    let badgeStyle, crownHtml = '';
+    if(pos === 1){
+      badgeStyle = "width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#ca8a04);color:#fff;box-shadow:0 4px 14px rgba(202,138,4,.45);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:900;flex-shrink:0;position:relative;";
+      crownHtml = '<span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:13px;line-height:1;">&#x1F451;</span>';
+    } else if(pos === 2){
+      badgeStyle = "width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#e2e8f0,#94a3b8);color:#fff;box-shadow:0 4px 10px rgba(148,163,184,.4);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:900;flex-shrink:0;position:relative;";
+    } else if(pos === 3){
+      badgeStyle = "width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#fed7aa,#b45309);color:#fff;box-shadow:0 4px 10px rgba(180,83,9,.35);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:900;flex-shrink:0;position:relative;";
+    } else {
+      badgeStyle = "width:42px;height:42px;border-radius:50%;background:#f1f5f9;border:1.5px solid #dbe4ee;color:#64748b;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;font-weight:900;flex-shrink:0;position:relative;";
+    }
+    return `
+    <div class="share-post-item">
+      <div style="${badgeStyle}">${crownHtml}${pos}</div>
+      <div class="share-post-item-copy">
+        <div class="share-post-item-title">${escapeHtml(item.title || '')}</div>
+        ${(item.desc || '').trim() ? `<div class="share-post-item-desc">${escapeHtml(item.desc || '')}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function buildShareTeamVisual(team, pos, note){
@@ -7046,18 +7075,9 @@ function getStatsSharePayloadBase(tipo, dataOverride=null){
   if(tipo === 'goleadores'){
     const data = Array.isArray(dataOverride) && dataOverride.length ? dataOverride : getTopScorersData(10);
     if(!data.length) return null;
-    const lider = data[0];
     const bodyHtml = `
-      <div class="share-post-hero">
-        <h2>TOP 10<br/>GOLEADORES</h2>
-        <p>Los jugadores más encendidos del torneo en ${escapeHtml(categoria)}.</p>
-      </div>
-      <div class="share-stat-grid">
-        <div class="share-stat-box"><div class="share-stat-val">${lider.goles}</div><div class="share-stat-lbl">Líder actual</div></div>
-        <div class="share-stat-box"><div class="share-stat-val">${data.length}</div><div class="share-stat-lbl">Jugadores en ranking</div></div>
-        <div class="share-stat-box"><div class="share-stat-val">${data.reduce((sum,g)=>sum+(g.goles||0),0)}</div><div class="share-stat-lbl">Goles top 10</div></div>
-      </div>
-      <div class="share-post-list">${buildShareListRows(data.map(g=>({
+      <div class="share-post-list">${buildShareRankingRows(data.map((g,i)=>({
+        pos: i+1,
         title: `${g.jugador} · ${g.goles} gol${g.goles===1?'':'es'}`,
         desc: g.equipo || 'Sin equipo'
       })))}</div>
@@ -7089,19 +7109,10 @@ function getStatsSharePayloadBase(tipo, dataOverride=null){
   if(tipo === 'porteros'){
     const data = Array.isArray(dataOverride) && dataOverride.length ? dataOverride : getTopGoalkeepersData(10);
     if(!data.length) return null;
-    const lider = data[0];
     const viewerMode = !isAdmin;
     const bodyHtml = `
-      <div class="share-post-hero">
-        <h2>TOP 10<br/>PORTEROS</h2>
-        <p>${viewerMode?'Listado oficial de porteros registrados en la categoría.':'Ranking basado en porterías imbatidas y menor promedio de goles recibidos por partido.'}</p>
-      </div>
-      ${viewerMode?'':`<div class="share-stat-grid">
-        <div class="share-stat-box"><div class="share-stat-val">${lider.porteriasImbatidas}</div><div class="share-stat-lbl">PI del líder</div></div>
-        <div class="share-stat-box"><div class="share-stat-val">${lider.promedioGC.toFixed(2)}</div><div class="share-stat-lbl">GC/PJ líder</div></div>
-        <div class="share-stat-box"><div class="share-stat-val">${data.length}</div><div class="share-stat-lbl">Porteros rankeados</div></div>
-      </div>`}
-      <div class="share-post-list">${buildShareListRows(data.map(g=>({
+      <div class="share-post-list">${buildShareRankingRows(data.map((g,i)=>({
+        pos: i+1,
         title: viewerMode ? `${g.portero}` : `${g.portero} · ${g.porteriasImbatidas} PI`,
         desc: viewerMode ? '' : `${g.equipo} · ${g.promedioGC.toFixed(2)} GC/PJ · ${g.golesRecibidos} GC`
       })))}</div>
