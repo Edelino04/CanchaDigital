@@ -690,9 +690,10 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 .keeper-main-lbl{font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);}
 
 /* SHARE STUDIO */
-.visual-share-shell{background:linear-gradient(180deg,#f7fafc,#eef3f8);border:1px solid rgba(15,23,42,.08);border-radius:18px;padding:12px;overflow:auto;max-height:52vh;}
-.visual-share-scale{transform:scale(.28);transform-origin:top center;width:1080px;height:378px;margin:0 auto;}
-#visualSharePreview{width:1080px;min-height:1180px;}
+.visual-share-shell{background:linear-gradient(180deg,#f0f4fb,#e8eef7);border:1.5px solid rgba(15,23,42,.10);border-radius:20px;padding:14px 12px;overflow:hidden;position:relative;}
+.visual-share-scale-wrap{width:100%;overflow:hidden;border-radius:14px;background:#fff;border:1px solid #dbe4ee;box-shadow:0 8px 20px rgba(15,23,42,.08);}
+.visual-share-scale{transform-origin:top left;display:block;}
+#visualSharePreview{width:1080px;min-height:900px;}
 .visual-share-caption{margin-top:12px;}
 .visual-share-caption textarea{min-height:110px;font-size:11px;line-height:1.55;}
 .visual-share-admin{margin-top:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;}
@@ -841,56 +842,103 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
 
 
 /* ═══ BRACKET REDISEÑADO ═══ */
-/* ═══ COPA BRACKET — FONDO BLANCO / DISEÑO PROFESIONAL ═══ */
-.bracket-wrap{position:relative;overflow:hidden;border-radius:28px;background:#ffffff;border:1.5px solid rgba(174,192,222,.85);box-shadow:0 20px 44px rgba(37,84,212,.09);padding:22px 18px 24px;}
-.bracket-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#1a3a8a 0%,#2ea83c 50%,#f59e0b 100%);border-radius:28px 28px 0 0;}
-.bracket-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
-.bracket-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#0f172a;line-height:1;}
-.bracket-chips{display:flex;gap:6px;flex-wrap:wrap;}
-.bracket-chip{padding:5px 12px;border-radius:999px;background:rgba(37,84,212,.07);border:1px solid rgba(37,84,212,.18);font-size:9px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:#1a3a8a;}
-.bracket-chip.gold{background:rgba(202,138,4,.1);border-color:rgba(202,138,4,.35);color:#92400e;}
-.bracket-scroll{overflow-x:auto;padding-bottom:6px;}
-.bracket-scroll::-webkit-scrollbar{height:5px;}
+/* ═══ COPA BRACKET — MOBILE-FIRST ═══ */
+.bracket-wrap{position:relative;overflow:hidden;border-radius:22px;background:#fff;border:1.5px solid rgba(174,192,222,.8);box-shadow:0 14px 30px rgba(37,84,212,.07);padding:16px 13px 18px;}
+.bracket-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#1a3a8a 0%,#2ea83c 50%,#f59e0b 100%);border-radius:22px 22px 0 0;}
+.bracket-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.bracket-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2.5px;color:#0f172a;line-height:1;}
+.bracket-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.bracket-chip{padding:4px 10px;border-radius:999px;background:#eff6ff;border:1px solid #bfdbfe;font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#1a3a8a;}
+.bracket-chip.gold{background:#fef3c7;border-color:#fcd34d;color:#92400e;}
+.bracket-scroll{overflow-x:auto;padding-bottom:2px;}
+.bracket-scroll::-webkit-scrollbar{height:3px;}
 .bracket-scroll::-webkit-scrollbar-thumb{background:#d0daee;border-radius:999px;}
-.bracket-board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:0;min-width:max-content;align-items:stretch;}
-/* Copa board layout visual tipo torneo */
-.bracket-copa-layout{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(160px,1fr);gap:0;min-width:max-content;align-items:stretch;}
-.bracket-round{display:flex;flex-direction:column;gap:0;min-width:0;position:relative;}
-.bracket-round-hdr{padding:9px 14px;border-radius:14px;background:linear-gradient(135deg,#0f172a,#1d4ed8);color:#fff;font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;text-align:center;box-shadow:0 8px 18px rgba(29,78,216,.2);margin-bottom:10px;}
-.bracket-round-name{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;}
-.bracket-round-sub{font-size:9px;color:rgba(255,255,255,.55);font-weight:600;margin-top:3px;display:block;letter-spacing:.4px;}
-.bracket-match{background:#fff;border:1.5px solid #dbe4ee;border-radius:20px;overflow:hidden;box-shadow:0 6px 16px rgba(15,23,42,.05);margin-bottom:10px;transition:border-color .2s,box-shadow .2s;}
-.bracket-match:hover{border-color:rgba(29,78,216,.35);box-shadow:0 10px 24px rgba(29,78,216,.1);}
-.bracket-slot{display:flex;align-items:center;gap:9px;padding:10px 11px;position:relative;}
-.bracket-slot + .bracket-slot{border-top:1px solid #edf2f7;}
-.bracket-slot.is-bye{opacity:.5;background:#fafafa;}
-.bracket-slot.is-tbd{opacity:.6;background:#fafafa;}
-.bracket-seed{width:24px;height:24px;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#1d4ed8;flex-shrink:0;}
-.bracket-seed.seed-1{background:linear-gradient(135deg,#fbbf24,#ca8a04);border-color:#f5d487;color:#fff;}
-.bracket-logo{width:30px;height:30px;border-radius:10px;object-fit:cover;background:#f8fafc;border:1px solid #dbe4ee;flex-shrink:0;}
-.bracket-logo-ph{width:30px;height:30px;border-radius:10px;background:#f1f5f9;border:1px solid #dbe4ee;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.bracket-team-info{flex:1;min-width:0;}
-.bracket-team-name{font-size:11px;font-weight:800;color:#0f172a;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.bracket-team-sub{font-size:9px;color:#64748b;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-/* Sub info solo admin */
-.bracket-team-sub.admin-detail{display:none;}
-.bracket-admin .bracket-team-sub.admin-detail{display:block;}
-/* note solo admin */
-.bracket-match-note{padding:6px 10px 8px;font-size:9px;color:rgba(255,255,255,.38);font-weight:700;border-top:1px solid rgba(255,255,255,.06);display:none;}
-.bracket-admin .bracket-match-note{display:block;}
-/* admin detail chips */
-.bracket-admin-chips{display:none;padding:6px 10px 8px;gap:5px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06);}
-.bracket-admin .bracket-admin-chips{display:flex;}
-.bracket-chip-sm{padding:2px 7px;border-radius:999px;background:rgba(77,126,245,.15);border:1px solid rgba(77,126,245,.28);font-size:8px;font-weight:800;color:rgba(255,255,255,.75);letter-spacing:.5px;}
-.bracket-vs-bar{display:flex;align-items:center;justify-content:center;padding:3px 0;background:#f8fafc;border-top:1px solid #edf2f7;border-bottom:1px solid #edf2f7;}
-.bracket-vs-text{font-family:'Bebas Neue',sans-serif;font-size:10px;color:#94a3b8;letter-spacing:2px;}
+/* ── Copa bracket component ── */
+.cb-bracket{font-family:'Montserrat',sans-serif;width:100%;}
+.cb-round-label{font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,#0f172a,#1d4ed8);color:#fff;padding:7px 12px;border-radius:11px;margin-bottom:10px;text-align:center;box-shadow:0 5px 12px rgba(29,78,216,.2);}
+.cb-round-label-sm{font-size:8px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#1e40af,#3b82f6);padding:5px 9px;border-radius:9px;margin-bottom:8px;text-align:center;box-shadow:0 3px 8px rgba(29,78,216,.18);}
+/* Grid principal: Izquierda | Centro | Derecha — desktop */
+.cb-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:start;width:100%;}
+/* Lados */
+.cb-side{display:flex;align-items:stretch;gap:0;}
+.cb-side-left{flex-direction:row;}
+.cb-side-right{flex-direction:row-reverse;}
+.cb-quarter-col,.cb-semi-col{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1;}
+.cb-spacer{height:8px;}
+/* Conector visual entre rondas */
+.cb-connector-col{display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:24px 4px 0;align-self:stretch;min-width:20px;}
+.cb-conn-line{width:18px;height:2px;background:linear-gradient(90deg,#bfdbfe,#2563eb);border-radius:999px;flex-shrink:0;}
+.cb-conn-line.cb-conn-left{background:linear-gradient(90deg,#2563eb,#bfdbfe);}
+/* Match card */
+.cb-match{background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;overflow:hidden;box-shadow:0 3px 10px rgba(15,23,42,.05);transition:border-color .2s,box-shadow .2s;}
+.cb-match:hover{border-color:#93c5fd;box-shadow:0 6px 16px rgba(29,78,216,.09);}
+.cb-tbd{opacity:.5;}
+/* Slot */
+.cb-vs-slot{display:flex;align-items:center;gap:7px;padding:9px 10px;min-width:0;}
+.cb-vs-slot+.cb-vs-slot{border-top:1px solid #f1f5f9;}
+.cb-bye{opacity:.4;background:#f8fafc;}
+.cb-tbd-slot{opacity:.6;background:#fafafa;}
+/* Seed */
+.cb-seed{min-width:20px;height:20px;border-radius:6px;background:#eff6ff;border:1px solid #bfdbfe;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#1d4ed8;flex-shrink:0;padding:0 3px;}
+.cb-seed-gold{background:linear-gradient(135deg,#fbbf24,#ca8a04)!important;border-color:#f5d487!important;color:#fff!important;}
+/* Logo */
+.cb-logo{width:24px;height:24px;border-radius:7px;object-fit:cover;background:#f8fafc;border:1px solid #e2e8f0;flex-shrink:0;}
+.cb-logo-ph{width:24px;height:24px;border-radius:7px;background:#f1f5f9;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+/* Nombre equipo */
+.cb-name{font-size:10px;font-weight:800;color:#0f172a;line-height:1.2;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cb-pts{font-size:8px;font-weight:700;color:#94a3b8;flex-shrink:0;}
+/* VS divider */
+.cb-divider{display:flex;align-items:center;justify-content:space-between;padding:3px 10px;background:#f8fafc;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;}
+.cb-divider>span:first-child{font-family:'Bebas Neue',sans-serif;font-size:9px;color:#94a3b8;letter-spacing:2px;}
+.cb-winner-badge{font-size:8px;font-weight:900;color:#059669;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px;}
+/* Centro: trofeo + final */
+.cb-center{display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 7px;min-width:110px;max-width:145px;}
+.cb-trophy-box{background:linear-gradient(180deg,#fffbeb,#fff8e1 50%,#fff);border:1.5px solid #fcd34d;border-radius:16px;padding:12px 8px 10px;text-align:center;width:100%;box-shadow:0 6px 18px rgba(202,138,4,.14);}
+.cb-trophy-icon{font-size:30px;line-height:1;margin-bottom:5px;}
+.cb-trophy-label{font-size:7px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#1a3a8a;margin-bottom:7px;}
+.cb-camp-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.cb-camp-logo{width:38px;height:38px;border-radius:10px;object-fit:cover;background:#fff;border:1px solid #dbe4ee;box-shadow:0 3px 8px rgba(15,23,42,.1);}
+.cb-camp-logo-ph{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#fbbf24,#ca8a04);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.cb-camp-name{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.8px;color:#0f172a;line-height:1.1;word-break:break-word;text-align:center;}
+.cb-camp-tag{font-size:7px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#ca8a04;}
+.cb-camp-tbd{font-size:9px;font-weight:800;color:#94a3b8;padding:4px 0;}
+.cb-final-match{width:100%;}
+.cb-final-label{font-size:7px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;text-align:center;margin-bottom:5px;}
+/* ── MOBILE: columnas apiladas ── */
 @media(max-width:640px){
-  .bracket-board{grid-auto-columns:minmax(150px,1fr);gap:0;}
-  .bracket-wrap{padding:16px 12px 18px;border-radius:22px;}
-  .bracket-title{font-size:22px;}
-  .bracket-slot{padding:9px 10px;gap:8px;}
-  .bracket-team-name{font-size:10px;}
+  .cb-grid{display:flex;flex-direction:column;gap:12px;width:100%;}
+  .cb-side{flex-direction:column!important;gap:0;width:100%;}
+  .cb-connector-col{display:flex;flex-direction:row;justify-content:center;padding:0;min-width:unset;height:22px;}
+  .cb-conn-line,.cb-conn-line.cb-conn-left{width:2px;height:22px;background:linear-gradient(180deg,#bfdbfe,#2563eb);}
+  .cb-quarter-col,.cb-semi-col{gap:8px;width:100%;}
+  .cb-center{max-width:100%;width:100%;padding:0;flex-direction:column;}
+  .cb-trophy-box{width:100%;padding:12px 14px 10px;}
+  .cb-final-match{width:100%;}
+  .cb-name{font-size:11px;}
+  .cb-vs-slot{padding:10px 11px;gap:8px;}
+  .cb-logo{width:26px;height:26px;}
+  .cb-logo-ph{width:26px;height:26px;}
+  .bracket-title{font-size:20px;}
+  .bracket-wrap{padding:14px 11px 16px;}
 }
+/* legacy fallback for share mode */
+.bracket-board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:10px;min-width:max-content;align-items:start;}
+.bracket-round{display:flex;flex-direction:column;gap:8px;min-width:0;}
+.bracket-round-hdr{padding:8px 12px;border-radius:12px;background:linear-gradient(135deg,#0f172a,#1d4ed8);color:#fff;font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;text-align:center;box-shadow:0 5px 12px rgba(29,78,216,.18);margin-bottom:2px;}
+.bracket-match{background:#fff;border:1.5px solid #dbe4ee;border-radius:14px;overflow:hidden;box-shadow:0 4px 10px rgba(15,23,42,.05);}
+.bracket-slot{display:flex;align-items:center;gap:8px;padding:9px 10px;}
+.bracket-slot+.bracket-slot{border-top:1px solid #f1f5f9;}
+.bracket-slot.is-bye{opacity:.45;background:#f9fafb;}
+.bracket-slot.is-tbd{opacity:.55;background:#f9fafb;}
+.bracket-seed{width:22px;height:22px;border-radius:7px;background:#eff6ff;border:1px solid #bfdbfe;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#1d4ed8;flex-shrink:0;}
+.bracket-seed.seed-1{background:linear-gradient(135deg,#fbbf24,#ca8a04);border-color:#f5d487;color:#fff;}
+.bracket-logo{width:26px;height:26px;border-radius:8px;object-fit:cover;background:#f8fafc;border:1px solid #dbe4ee;flex-shrink:0;}
+.bracket-logo-ph{width:26px;height:26px;border-radius:8px;background:#f1f5f9;border:1px solid #dbe4ee;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.bracket-team-info{flex:1;min-width:0;}
+.bracket-team-name{font-size:10px;font-weight:800;color:#0f172a;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bracket-team-sub{font-size:9px;color:#64748b;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bracket-vs-bar{display:flex;align-items:center;justify-content:center;padding:3px 0;background:#f8fafc;border-top:1px solid #edf2f7;border-bottom:1px solid #edf2f7;}
+.bracket-vs-text{font-family:'Bebas Neue',sans-serif;font-size:9px;color:#94a3b8;letter-spacing:2px;}
 /* MERCADOTECNIA */
 .marketing-hero{position:relative;overflow:hidden;border-radius:22px;padding:22px 20px;background:
   radial-gradient(circle at top right,rgba(14,165,233,.18),transparent 36%),
@@ -1077,8 +1125,8 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
 <button class="nav-tab active" onclick="showPage('tabla',this)">📊 Tabla</button>
 <button class="nav-tab" onclick="showPage('partidos',this)">⚽ Últimos Partidos</button>
 <button class="nav-tab" onclick="showPage('equipos',this)">🏆 Equipos</button>
-<button class="nav-tab" onclick="showPage('historial',this)">🏅 Historial</button>
 <button class="nav-tab" onclick="showPage('reglamento',this)">📋 Reglamento</button>
+<button class="nav-tab" onclick="showPage('historial',this)">🏅 Historial</button>
 <button class="nav-tab admin-only" id="navTienda" onclick="showPage('tienda',this)">🛒 Tienda</button>
 <button class="nav-tab admin-only" id="navInsc" onclick="showPage('inscripciones',this)">💰 Inscripciones</button>
 <button class="nav-tab admin-only" id="navArb" onclick="showPage('arbitros',this)">👥 Capital Humano</button>
@@ -2377,8 +2425,10 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
   <div class="modal" style="border-top-color:var(--emerald)">
     <div class="modal-head"><div class="modal-title" style="color:var(--emerald)" id="visualShareTitle">📤 Compartir Visual</div><button class="modal-close" onclick="closeModal('modalVisualShare')">✕</button></div>
     <div class="visual-share-shell">
-      <div class="visual-share-scale">
-        <div id="visualSharePreview"></div>
+      <div class="visual-share-scale-wrap" id="visualShareScaleWrap">
+        <div class="visual-share-scale" id="visualShareScaleEl">
+          <div id="visualSharePreview"></div>
+        </div>
       </div>
     </div>
     <div class="visual-share-admin" id="visualShareAdminControls" style="display:none">
@@ -3821,90 +3871,118 @@ function buildCupBracketHtml(cupData, opts={}){
 
 function buildCopaBracketVisual(cupData, adminMode=false){
   const rounds = cupData.rounds;
-  const r0 = rounds[0]; // cuartos (4 partidos si hay 8 equipos)
-  const r1 = rounds[1]; // semis (2 partidos)
-  const rFinal = rounds[rounds.length-1]; // final (1 partido)
-
-  // Dividir cuartos en lado izquierdo (primeros mitad) y derecho (segunda mitad)
-  const r0Left = r0.matches.slice(0, Math.ceil(r0.matches.length/2));
-  const r0Right = r0.matches.slice(Math.ceil(r0.matches.length/2));
-  const r1Left = r1 ? r1.matches.slice(0, Math.ceil(r1.matches.length/2)) : [];
-  const r1Right = r1 ? r1.matches.slice(Math.ceil(r1.matches.length/2)) : [];
+  // r0 = cuartos (hasta 4 partidos), r1 = semis (hasta 2), rFinal = final
+  const r0 = rounds[0];
+  const r1 = rounds.length > 1 ? rounds[1] : null;
+  const rFinal = rounds[rounds.length - 1];
   const finalMatch = rFinal?.matches[0] || null;
+  const campeon = finalMatch?.winner || null;
 
-  function matchHtml(match, mi, roundName){
-    if(!match) return `<div class="bracket-match" style="opacity:.3;"><div class="bracket-slot is-tbd"><div class="bracket-seed">?</div><div class="bracket-logo-ph">⚽</div><div class="bracket-team-info"><div class="bracket-team-name">Por definirse</div></div></div><div style="text-align:center;padding:4px 0;font-size:10px;color:#94a3b8;font-weight:800;letter-spacing:2px;">VS</div><div class="bracket-slot is-tbd"><div class="bracket-seed">?</div><div class="bracket-logo-ph">⚽</div><div class="bracket-team-info"><div class="bracket-team-name">Por definirse</div></div></div></div>`;
-    const note = adminMode && match.note ? `<div style="padding:5px 10px 7px;font-size:9px;color:#64748b;font-weight:700;border-top:1px solid #edf2f7;">${escapeHtml(match.note)}</div>` : '';
-    return `<div class="bracket-match">
-      ${renderBracketSlot(match.slotA, adminMode)}
-      <div class="bracket-vs-bar"><span class="bracket-vs-text">VS</span></div>
-      ${renderBracketSlot(match.slotB, adminMode)}
-      ${note}
+  // — helper: render a single match card —
+  function matchCard(match, idx, roundIdx){
+    if(!match) return `<div class="cb-match cb-tbd"><div class="cb-vs-slot"><span class="cb-seed">?</span><span class="cb-logo-ph">⚽</span><span class="cb-name">Por definirse</span></div><div class="cb-divider">VS</div><div class="cb-vs-slot"><span class="cb-seed">?</span><span class="cb-logo-ph">⚽</span><span class="cb-name">Por definirse</span></div></div>`;
+    function slot(s){
+      const logo = s.team?.logo
+        ? `<img class="cb-logo" src="${escapeHtml(s.team.logo)}" />`
+        : `<span class="cb-logo-ph">${s.isBye?'⬜':'⚽'}</span>`;
+      const seedCls = s.seed===1 ? 'cb-seed cb-seed-gold' : 'cb-seed';
+      const slotCls = `cb-vs-slot${s.isBye?' cb-bye':''}${s.isPlaceholder?' cb-tbd-slot':''}`;
+      const pts = adminMode && s.team ? `<span class="cb-pts">${s.team.pts||0}p</span>` : '';
+      return `<div class="${slotCls}">
+        <span class="${seedCls}">${s.seed?`#${s.seed}`:'?'}</span>
+        ${logo}
+        <span class="cb-name">${escapeHtml(s.displayName||'Por definirse')}</span>
+        ${pts}
+      </div>`;
+    }
+    const winnerBadge = match.winner
+      ? `<span class="cb-winner-badge">✓ ${escapeHtml(match.winner.nombre)}</span>`
+      : '';
+    return `<div class="cb-match">
+      ${slot(match.slotA)}
+      <div class="cb-divider"><span>VS</span>${winnerBadge}</div>
+      ${slot(match.slotB)}
     </div>`;
   }
 
-  const ladoIzqLabel = r0.name;
-  const ladoDerLabel = r0.name;
-  const semiLabel = r1 ? r1.name : 'Semifinal';
-  const finalLabel = rFinal ? rFinal.name : 'Gran Final';
+  // Split r0 into left (first half) and right (second half)
+  const half = Math.ceil(r0.matches.length / 2);
+  const r0L = r0.matches.slice(0, half);
+  const r0R = r0.matches.slice(half);
+  const r1L = r1 ? r1.matches.slice(0, Math.ceil(r1.matches.length/2)) : [];
+  const r1R = r1 ? r1.matches.slice(Math.ceil(r1.matches.length/2)) : [];
 
-  // Winner of final
-  const campeon = finalMatch?.winner || null;
-  const campeonHtml = campeon
-    ? `<div style="text-align:center;padding:10px 8px 8px;">
-        <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#ca8a04;margin-bottom:4px;">🏆 CAMPEÓN</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:#0f172a;line-height:1;">${escapeHtml(campeon.nombre)}</div>
-      </div>`
-    : `<div style="text-align:center;padding:10px 8px 8px;">
-        <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#64748b;margin-bottom:4px;">CAMPEÓN</div>
-        <div style="font-size:11px;font-weight:800;color:#94a3b8;">Por definirse</div>
-      </div>`;
+  // Camp display
+  const campLogoHtml = campeon?.logo
+    ? `<img src="${escapeHtml(campeon.logo)}" class="cb-camp-logo"/>`
+    : `<div class="cb-camp-logo-ph">🏆</div>`;
+  const campNombre = campeon ? escapeHtml(campeon.nombre) : 'Por definirse';
 
-  return `<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:0;min-width:600px;align-items:start;">
-    <!-- LADO IZQUIERDO -->
-    <div style="display:flex;flex-direction:column;gap:0;padding-right:8px;">
-      <div class="bracket-round-hdr" style="margin-bottom:10px;">${escapeHtml(ladoIzqLabel)} <span class="bracket-round-sub">Lado Izquierdo</span></div>
-      <div style="display:grid;grid-template-columns:1fr auto;gap:0;align-items:center;">
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          ${r0Left.map((m,mi)=>matchHtml(m,mi,r0.name)).join('')}
+  return `
+  <div class="cb-bracket">
+    <!-- ── TÍTULO RONDA CUARTOS ── -->
+    <div class="cb-round-label">${escapeHtml(r0.name)}</div>
+
+    <!-- ── GRID PRINCIPAL: Izquierda | Centro | Derecha ── -->
+    <div class="cb-grid">
+
+      <!-- LADO IZQUIERDO: cuartos L → semi L -->
+      <div class="cb-side cb-side-left">
+        <div class="cb-quarter-col">
+          ${r0L.map((m,i)=>matchCard(m,i,0)).join('<div class="cb-spacer"></div>')}
         </div>
-        <!-- Conector izquierdo → semi -->
-        <div style="display:flex;flex-direction:column;justify-content:space-around;height:100%;padding:0 6px;">
-          ${r0Left.map(()=>`<div style="width:14px;height:2px;background:linear-gradient(90deg,#dbe4ee,#1a3a8a);border-radius:999px;margin:auto 0;"></div>`).join('')}
+        <div class="cb-connector-col">
+          ${r0L.map(()=>`<div class="cb-conn-line cb-conn-right"></div>`).join('')}
+        </div>
+        ${r1L.length ? `
+        <div class="cb-semi-col">
+          <div class="cb-round-label-sm">${r1 ? escapeHtml(r1.name) : 'Semifinal'}</div>
+          ${r1L.map((m,i)=>matchCard(m,i,1)).join('')}
+        </div>
+        <div class="cb-connector-col">
+          ${r1L.map(()=>`<div class="cb-conn-line cb-conn-right"></div>`).join('')}
+        </div>` : ''}
+      </div>
+
+      <!-- CENTRO: Trofeo + Final -->
+      <div class="cb-center">
+        <div class="cb-trophy-box">
+          <div class="cb-trophy-icon">🏆</div>
+          <div class="cb-trophy-label">GRAN FINAL</div>
+          ${campeon ? `
+          <div class="cb-camp-wrap">
+            ${campLogoHtml}
+            <div class="cb-camp-name">${campNombre}</div>
+            <div class="cb-camp-tag">CAMPEÓN</div>
+          </div>` : `<div class="cb-camp-tbd">Por definirse</div>`}
+        </div>
+        ${finalMatch ? `
+        <div class="cb-final-match">
+          <div class="cb-final-label">${escapeHtml(rFinal.name)}</div>
+          ${matchCard(finalMatch, 0, rounds.length-1)}
+        </div>` : ''}
+      </div>
+
+      <!-- LADO DERECHO: semi R → cuartos R -->
+      <div class="cb-side cb-side-right">
+        ${r1R.length ? `
+        <div class="cb-connector-col">
+          ${r1R.map(()=>`<div class="cb-conn-line cb-conn-left"></div>`).join('')}
+        </div>
+        <div class="cb-semi-col">
+          <div class="cb-round-label-sm">${r1 ? escapeHtml(r1.name) : 'Semifinal'}</div>
+          ${r1R.map((m,i)=>matchCard(m,i,1)).join('')}
+        </div>` : ''}
+        <div class="cb-connector-col">
+          ${r0R.map(()=>`<div class="cb-conn-line cb-conn-left"></div>`).join('')}
+        </div>
+        <div class="cb-quarter-col">
+          ${r0R.map((m,i)=>matchCard(m,i,0)).join('<div class="cb-spacer"></div>')}
         </div>
       </div>
-      <!-- Semis izquierda -->
-      ${r1Left.length ? `<div style="margin-top:10px;"><div class="bracket-round-hdr" style="margin-bottom:10px;">${escapeHtml(semiLabel)}</div>${r1Left.map((m,mi)=>matchHtml(m,mi,semiLabel)).join('')}</div>` : ''}
-    </div>
 
-    <!-- CENTRO: FINAL + TROFEO -->
-    <div style="display:flex;flex-direction:column;align-items:center;padding:0 8px;min-width:140px;">
-      <div class="bracket-round-hdr" style="width:100%;text-align:center;margin-bottom:10px;">${escapeHtml(finalLabel)}</div>
-      <!-- Trofeo -->
-      <div style="text-align:center;padding:14px 10px 8px;background:linear-gradient(180deg,#fffdf5,#ffffff);border:1.5px solid rgba(202,138,4,.35);border-radius:22px;box-shadow:0 10px 28px rgba(202,138,4,.12);margin-bottom:10px;width:100%;">
-        <div style="font-size:42px;line-height:1;margin-bottom:6px;">🏆</div>
-        <div style="font-size:9px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#1a3a8a;margin-bottom:2px;">GRAN FINAL</div>
-        ${campeonHtml}
-      </div>
-      ${finalMatch ? matchHtml(finalMatch, 0, finalLabel) : ''}
-    </div>
-
-    <!-- LADO DERECHO -->
-    <div style="display:flex;flex-direction:column;gap:0;padding-left:8px;">
-      <div class="bracket-round-hdr" style="margin-bottom:10px;">${escapeHtml(ladoDerLabel)} <span class="bracket-round-sub">Lado Derecho</span></div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:0;align-items:center;">
-        <!-- Conector derecho ← semi -->
-        <div style="display:flex;flex-direction:column;justify-content:space-around;height:100%;padding:0 6px;">
-          ${r0Right.map(()=>`<div style="width:14px;height:2px;background:linear-gradient(90deg,#1a3a8a,#dbe4ee);border-radius:999px;margin:auto 0;"></div>`).join('')}
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          ${r0Right.map((m,mi)=>matchHtml(m,mi,r0.name)).join('')}
-        </div>
-      </div>
-      <!-- Semis derecha -->
-      ${r1Right.length ? `<div style="margin-top:10px;"><div class="bracket-round-hdr" style="margin-bottom:10px;">${escapeHtml(semiLabel)}</div>${r1Right.map((m,mi)=>matchHtml(m,mi,semiLabel)).join('')}</div>` : ''}
-    </div>
-  </div>`;
+    </div><!-- /cb-grid -->
+  </div><!-- /cb-bracket -->`;
 }
 
 /* legacy alias */
@@ -6320,7 +6398,7 @@ function compartirCopa(){
         <div style="position:absolute;top:60px;right:50px;width:160px;height:160px;border-radius:50%;background:rgba(29,78,216,.04);pointer-events:none;"></div>
         <div style="position:absolute;bottom:60px;left:30px;width:130px;height:130px;border-radius:50%;background:rgba(249,115,22,.05);pointer-events:none;"></div>
         <!-- Header -->
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:28px;position:relative;z-index:1;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px;position:relative;z-index:1;">
           <div style="display:flex;align-items:center;gap:14px;">
             ${torLogoHtml}
             ${shieldHtml}
@@ -6331,22 +6409,6 @@ function compartirCopa(){
             </div>
           </div>
           <div style="padding:12px 18px;border-radius:999px;background:#fff;border:1px solid #dfe7f1;font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#1e3a8a;box-shadow:0 8px 18px rgba(15,23,42,.05);white-space:nowrap;flex-shrink:0;">Actualizado · ${escapeHtml(fecha)}</div>
-        </div>
-        <!-- Stats chips -->
-        <div style="display:flex;gap:12px;margin-bottom:22px;position:relative;z-index:1;">
-          <div style="background:#fff;border:1px solid #dbe4ee;border-radius:16px;padding:12px 18px;box-shadow:0 6px 14px rgba(15,23,42,.05);">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;color:#1d4ed8;">${cupData.qualifiedTeams}</div>
-            <div style="font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-top:6px;">Equipos</div>
-          </div>
-          <div style="background:#fff;border:1px solid #dbe4ee;border-radius:16px;padding:12px 18px;box-shadow:0 6px 14px rgba(15,23,42,.05);">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;color:#1d4ed8;">${cupData.rounds[0]?.matches?.length||0}</div>
-            <div style="font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-top:6px;">${escapeHtml(cupData.stageLabel)}</div>
-          </div>
-          <div style="background:linear-gradient(180deg,#fff8e6,#ffffff);border:1px solid #f5d487;border-radius:16px;padding:12px 18px;box-shadow:0 6px 14px rgba(202,138,4,.09);">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:#92400e;margin-bottom:4px;">#1</div>
-            <div style="font-size:13px;font-weight:900;color:#0f172a;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cupData.leader?.nombre||'Líder')}</div>
-            <div style="font-size:10px;font-weight:700;color:#92400e;letter-spacing:.5px;">Cabeza de serie</div>
-          </div>
         </div>
         <!-- Bracket -->
         <div style="position:relative;z-index:1;background:#ffffff;border:1.5px solid #dbe4ee;border-radius:22px;padding:20px;box-shadow:0 10px 28px rgba(15,23,42,.06);overflow:hidden;">
@@ -6982,11 +7044,21 @@ function renderVisualShareModal(){
   if(btnShare) btnShare.style.display = isAdmin ? '' : 'none';
   if(btnCopy) btnCopy.style.display = isAdmin ? '' : 'none';
   if(actionsWrap) actionsWrap.style.gridTemplateColumns = isAdmin ? '1fr 1fr' : '1fr';
+  // Scale preview to fit container
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const scaleEl = document.getElementById('visualShareScaleEl');
+    const wrapEl = document.getElementById('visualShareScaleWrap');
     const root = previewEl?.firstElementChild;
-    const scaleWrap = document.querySelector('.visual-share-scale');
-    if(root && scaleWrap){
-      scaleWrap.style.height = `${Math.max(380, Math.round(root.scrollHeight * 0.28) + 8)}px`;
+    if(scaleEl && wrapEl && root){
+      const srcW = 1080;
+      const wrapW = wrapEl.clientWidth || wrapEl.offsetWidth || 320;
+      const scale = Math.min(1, wrapW / srcW);
+      const srcH = root.scrollHeight || root.offsetHeight || 900;
+      scaleEl.style.transform = `scale(${scale})`;
+      scaleEl.style.transformOrigin = 'top left';
+      scaleEl.style.width = `${srcW}px`;
+      scaleEl.style.display = 'block';
+      wrapEl.style.height = `${Math.round(srcH * scale)}px`;
     }
   }));
 }
@@ -7335,11 +7407,21 @@ function renderVisualShareModal(){
   if(btnCopy) btnCopy.style.display = isAdmin ? '' : 'none';
   if(actionsWrap) actionsWrap.style.gridTemplateColumns = isAdmin ? '1fr 1fr' : '1fr 1fr';
   setVisualShareBusy(false);
+  // Scale preview to fit container width
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const scaleEl = document.getElementById('visualShareScaleEl');
+    const wrapEl = document.getElementById('visualShareScaleWrap');
     const root = previewEl?.firstElementChild;
-    const scaleWrap = document.querySelector('.visual-share-scale');
-    if(root && scaleWrap){
-      scaleWrap.style.height = `${Math.max(380, Math.round(root.scrollHeight * 0.28) + 8)}px`;
+    if(scaleEl && wrapEl && root){
+      const srcW = 1080;
+      const wrapW = wrapEl.clientWidth || wrapEl.offsetWidth || 320;
+      const scale = Math.min(1, wrapW / srcW);
+      const srcH = root.scrollHeight || root.offsetHeight || 900;
+      scaleEl.style.transform = `scale(${scale})`;
+      scaleEl.style.transformOrigin = 'top left';
+      scaleEl.style.width = `${srcW}px`;
+      scaleEl.style.display = 'block';
+      wrapEl.style.height = `${Math.round(srcH * scale)}px`;
     }
   }));
 }
