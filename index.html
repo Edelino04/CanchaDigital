@@ -1219,6 +1219,13 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
     <div class="sl"></div>
     <button class="btn btn-out btn-sm" onclick="compartirTabla()" title="Compartir tabla">📤</button>
   </div>
+  <!-- Tabs Vuelta 1 / Vuelta 2 / General -->
+  <div class="cat-tabs" id="vueltaTabs" style="padding:6px 2px 10px;gap:8px;">
+    <button class="cat-tab active" id="vtab-general" onclick="selectVuelta('general',this)">General</button>
+    <button class="cat-tab" id="vtab-v1" onclick="selectVuelta('v1',this)">🔵 Vuelta 1</button>
+    <button class="cat-tab" id="vtab-v2" onclick="selectVuelta('v2',this)">🟠 Vuelta 2</button>
+  </div>
+  <div id="vueltaInfoBanner" style="display:none;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;line-height:1.5;"></div>
   <div class="tabla-wrap card" style="padding:0" id="tablaCaptura">
     <table class="tabla">
       <thead><tr>
@@ -1329,10 +1336,10 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#1a3a8a,#2554d4);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🏆</div>
       <div>
         <div style="font-size:13px;font-weight:900;color:var(--text);">A) Fase de Liga</div>
-        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">10 Jornadas · Todos contra todos</div>
+        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">12 Jornadas · 2 Vueltas · Todos contra todos</div>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Se disputarán <strong>10 jornadas</strong> de todos contra todos. El equipo que finalice en primer lugar al término de todas las jornadas quedará <strong>Campeón de Liga</strong>.</p>
+    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Se disputarán <strong>12 jornadas</strong> en <strong>2 vueltas</strong> de todos contra todos (6 jornadas por vuelta). El equipo que acumule más puntos al término de las <strong>12 jornadas totales</strong> quedará <strong>Campeón de Liga</strong>. Se generará tabla individual por vuelta y tabla general.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
       <div style="background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.25);border-radius:12px;padding:12px 10px;text-align:center;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#16a34a;line-height:1;">3</div>
@@ -1357,20 +1364,34 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#ca8a04,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🥊</div>
       <div>
         <div style="font-size:13px;font-weight:900;color:var(--text);">B) Fase Copa (Liguilla)</div>
-        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">Eliminación directa</div>
+        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">6 Clasificados · Eliminación directa</div>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Al término de la Fase de Liga, todos los equipos clasificados participarán en eliminación directa conforme a su posición en la tabla:</p>
+    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Clasifican los <strong>6 primeros equipos</strong>. El 7° queda eliminado. Formato de eliminación directa:</p>
     <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
-      <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(202,138,4,.1),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.2);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:11px;font-weight:900;color:#ca8a04;white-space:nowrap;">1° vs último</span>
+      <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(202,138,4,.12),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.25);border-radius:10px;padding:9px 12px;">
+        <span style="font-size:14px;">🏅</span>
+        <span style="font-size:11px;font-weight:900;color:#ca8a04;white-space:nowrap;">1° y 2°</span>
         <div style="flex:1;height:1px;background:rgba(202,138,4,.2);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Primer lugar vs último</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Pasan directo a Semifinal</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px;background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">2° vs penúlt.</span>
+        <span style="font-size:14px;">⚔️</span>
+        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">3° vs 6°</span>
         <div style="flex:1;height:1px;background:var(--border);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Y así sucesivamente…</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Ganador enfrenta al 2°</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
+        <span style="font-size:14px;">⚔️</span>
+        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">4° vs 5°</span>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Ganador enfrenta al 1°</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.18);border-radius:10px;padding:9px 12px;">
+        <span style="font-size:14px;">❌</span>
+        <span style="font-size:11px;font-weight:900;color:var(--red);white-space:nowrap;">7°</span>
+        <div style="flex:1;height:1px;background:rgba(220,38,38,.15);"></div>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Eliminado directamente</span>
       </div>
     </div>
     <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:11px;color:var(--text2);font-weight:600;line-height:1.6;">
@@ -1448,7 +1469,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <span style="font-size:20px;flex-shrink:0;margin-top:1px;">📋</span>
       <div>
         <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Altas de jugadores</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Se permitirán altas de jugadores hasta la <strong>jornada 5</strong>.</div>
+        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Se permitirán altas de jugadores hasta la <strong>jornada 6</strong> (al término de la Vuelta 1).</div>
       </div>
     </div>
     <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
@@ -1488,7 +1509,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       </div>
       <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:11px 12px;">
         <span style="font-size:16px;flex-shrink:0;">📅</span>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">El monto restante deberá liquidarse antes de la <strong>jornada 6</strong>.</div>
+        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">El monto restante deberá liquidarse antes de la <strong>jornada 7</strong> (inicio de la Vuelta 2).</div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.18);border-radius:10px;padding:11px 12px;">
         <span style="font-size:16px;flex-shrink:0;">🚫</span>
@@ -2453,7 +2474,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
     <div class="fg"><label class="fl">🥇 Campeón</label><input class="fi" id="temp_campeon" placeholder="Nombre del equipo campeón"/></div>
     <div class="fg"><label class="fl">🥈 Subcampeón</label><input class="fi" id="temp_subcampeon" placeholder="Nombre del subcampeón"/></div>
     <div class="fg"><label class="fl">⚽ Goleador del torneo</label><input class="fi" id="temp_goleador" placeholder="Jugador · Equipo · Goles"/></div>
-    <div class="fg"><label class="fl">Notas</label><input class="fi" id="temp_notas" placeholder="Ej: 8 equipos, 10 jornadas..."/></div>
+    <div class="fg"><label class="fl">Notas</label><input class="fi" id="temp_notas" placeholder="Ej: 7 equipos, 12 jornadas, 2 vueltas..."/></div>
     <button class="btn btn-g btn-full" onclick="guardarTemporada()">💾 Guardar temporada</button>
   </div>
 </div>
@@ -3375,6 +3396,11 @@ function selectCat(cat, btn){
   if(btn?.scrollIntoView){
     btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
   }
+  // Reset vuelta tab al cambiar categoría
+  currentVuelta = 'general';
+  document.querySelectorAll('#vueltaTabs .cat-tab').forEach(b=>b.classList.remove('active'));
+  const vtabGeneral = document.getElementById('vtab-general');
+  if(vtabGeneral) vtabGeneral.classList.add('active');
   renderTabla();
   renderGoleadores();
   renderPorteros();
@@ -3692,14 +3718,17 @@ function uploadImg(inputId, prevId, lblId, maxPx){
 // ══════════════════════════════════════
 //  TABLA DE POSICIONES
 // ══════════════════════════════════════
-function buildTablaData(){
+// ══ VUELTAS CONFIG ══
+// 7 equipos, 6 jornadas por vuelta, 2 vueltas = 12 jornadas totales
+const JORNADAS_POR_VUELTA = 6;
+const TOTAL_VUELTAS = 2;
+
+function buildTablaDataFromParts(partsArray){
   const teams = {};
-  // Pre-seed all registered teams for this torneo+cat with 0 stats
   getEqs().filter(e=>e.torneo===currentTorneo&&e.cat===currentCat&&e.nombre).forEach(e=>{
     if(!teams[e.nombre]) teams[e.nombre]={nombre:e.nombre,logo:e.logo||null,pj:0,g:0,e:0,pe:0,gf:0,gc:0,pts:0,forma:[]};
   });
-  const parts = filteredParts().filter(p=>p.status==='terminado');
-  parts.forEach(p=>{
+  partsArray.forEach(p=>{
     [p.localNombre||p.local, p.visitaNombre||p.visita].forEach(t=>{
       if(t && !teams[t]) teams[t]={nombre:t,logo:null,pj:0,g:0,e:0,pe:0,gf:0,gc:0,pts:0,forma:[]};
     });
@@ -3708,7 +3737,6 @@ function buildTablaData(){
     const tl=teams[ln],tv=teams[vn];
     const gL=p.gL||0,gV=p.gV||0;
     tl.pj++;tv.pj++;tl.gf+=gL;tl.gc+=gV;tv.gf+=gV;tv.gc+=gL;
-    // get logos from equipos
     const eqL=getEqs().find(e=>e.nombre===ln&&e.torneo===currentTorneo&&e.cat===currentCat);
     const eqV=getEqs().find(e=>e.nombre===vn&&e.torneo===currentTorneo&&e.cat===currentCat);
     if(eqL?.logo) tl.logo=eqL.logo;
@@ -3718,6 +3746,41 @@ function buildTablaData(){
     else{tl.e++;tv.e++;tl.pts++;tv.pts++;tl.forma.push('D');tv.forma.push('D');}
   });
   return Object.values(teams).sort((a,b)=>b.pts-a.pts||(b.gf-b.gc)-(a.gf-a.gc)||b.gf-a.gf);
+}
+
+function buildTablaData(){ // general — todas las jornadas
+  const parts = filteredParts().filter(p=>p.status==='terminado');
+  return buildTablaDataFromParts(parts);
+}
+
+function buildTablaVuelta(vuelta){ // vuelta: 1 o 2
+  // Una "vuelta" = JORNADAS_POR_VUELTA jornadas seguidas
+  // Detectamos la jornada de cada partido por su campo jornada o posición cronológica
+  const allParts = filteredParts().filter(p=>p.status==='terminado');
+  // Ordenar por fecha, luego hora si hay
+  const sorted = allParts.slice().sort((a,b)=>{
+    const da=a.fecha||'', db=b.fecha||''; return da<db?-1:da>db?1:0;
+  });
+  const start = (vuelta-1)*JORNADAS_POR_VUELTA; // índice de jornada base-0
+  const end   = vuelta*JORNADAS_POR_VUELTA;
+  // Agrupamos partidos por jornada (campo jornada numérico, o por orden cronológico)
+  // Si los partidos tienen campo "jornada" usarlo, si no, inferirlo por orden
+  const jornadaOf = (p) => {
+    if(p.jornada && !isNaN(parseInt(p.jornada))) return parseInt(p.jornada);
+    return null;
+  };
+  let filtered;
+  const hasJornadas = allParts.some(p=>jornadaOf(p)!==null);
+  if(hasJornadas){
+    filtered = allParts.filter(p=>{ const j=jornadaOf(p); return j!=null && j>=(start+1) && j<=end; });
+  } else {
+    // Sin campo jornada: inferir por orden cronológico agrupando por fecha
+    // Cada jornada = un día de partidos
+    const fechas = [...new Set(sorted.map(p=>p.fecha||'sin-fecha'))];
+    const jorFechas = fechas.slice(start, end);
+    filtered = sorted.filter(p=>jorFechas.includes(p.fecha||'sin-fecha'));
+  }
+  return buildTablaDataFromParts(filtered);
 }
 
 function getISODateFromLocal(date){
@@ -3798,78 +3861,29 @@ function createCupSlot(team, seed=null, fallbackLabel='Por definirse', opts={}){
 }
 
 function buildCupProjectionData(dataOverride=null){
+  // FORMATO TORNEO LOS ALAMITOS: 7 equipos, TOP 6 clasifican, 7mo eliminado
+  // Cuartos: 3° vs 6°, 4° vs 5°
+  // Semifinal: Gan(3v6) vs 2°, Gan(4v5) vs 1°
+  // Final: Gan SF1 vs Gan SF2
   const tabla = Array.isArray(dataOverride) && dataOverride.length ? dataOverride.slice() : buildTablaData();
   if(tabla.length < 2) return null;
-  // Copa: siempre top 8 equipos (cuartos de final), el resto queda eliminado
-  const CUP_MAX = 8;
-  const rawSize = Math.min(tabla.length, CUP_MAX);
-  const bracketSize = getNextPowerOfTwo(rawSize);
-  const seededTeams = tabla.slice(0, bracketSize).map((team,index)=>({ ...team, seed:index+1 }));
-  const teamsBySeed = Object.fromEntries(seededTeams.map(team=>[team.seed, team]));
-  const seedOrder = generateCupSeedOrder(bracketSize);
-  const rounds = [];
-
-  let prevMatches = [];
-  for(let i=0; i<seedOrder.length; i+=2){
-    const topSeed = seedOrder[i];
-    const bottomSeed = seedOrder[i+1];
-    const topTeam = teamsBySeed[topSeed] || null;
-    const bottomTeam = teamsBySeed[bottomSeed] || null;
-    const winner = topTeam && !bottomTeam ? topTeam : (!topTeam && bottomTeam ? bottomTeam : null);
-    prevMatches.push({
-      id:`r1m${(i/2)+1}`,
-      slotA:createCupSlot(topTeam, topSeed, topTeam ? topTeam.nombre : 'BYE', { isBye:!topTeam }),
-      slotB:createCupSlot(bottomTeam, bottomSeed, bottomTeam ? bottomTeam.nombre : 'BYE', { isBye:!bottomTeam }),
-      winner,
-      winnerLabel:winner ? `${winner.seed}. ${winner.nombre}` : `Ganador ${getCupRoundShortName(seedOrder.length/2)} ${(i/2)+1}`,
-      note:winner ? `El seed ${winner.seed} avanzaría directo por bye.` : `Cruce proyectado: ${topSeed} vs ${bottomSeed}.`
-    });
-  }
-  rounds.push({
-    name:getCupRoundName(prevMatches.length),
-    short:getCupRoundShortName(prevMatches.length),
-    matches:prevMatches
-  });
-
-  while(prevMatches.length > 1){
-    const nextMatches = [];
-    const nextShort = getCupRoundShortName(prevMatches.length / 2);
-    for(let i=0; i<prevMatches.length; i+=2){
-      const left = prevMatches[i];
-      const right = prevMatches[i+1];
-      const leftWinner = left?.winner || null;
-      const rightWinner = right?.winner || null;
-      const winner = leftWinner && !rightWinner ? leftWinner : (!leftWinner && rightWinner ? rightWinner : null);
-      nextMatches.push({
-        id:`r${rounds.length+1}m${(i/2)+1}`,
-        slotA:createCupSlot(leftWinner, leftWinner?.seed || null, left?.winnerLabel || `Ganador ${rounds[rounds.length-1].short} ${i+1}`, {
-          subtitle:leftWinner ? `Seed ${leftWinner.seed} en carrera` : `Ganador ${rounds[rounds.length-1].short} ${(i)+1}`
-        }),
-        slotB:createCupSlot(rightWinner, rightWinner?.seed || null, right?.winnerLabel || `Ganador ${rounds[rounds.length-1].short} ${i+2}`, {
-          subtitle:rightWinner ? `Seed ${rightWinner.seed} en carrera` : `Ganador ${rounds[rounds.length-1].short} ${(i)+2}`
-        }),
-        winner,
-        winnerLabel:winner ? `${winner.seed}. ${winner.nombre}` : `Ganador ${nextShort} ${(i/2)+1}`,
-        note:winner ? `Con bye previo, ${winner.nombre} quedaría sembrado en la siguiente llave.` : 'La llave se completará conforme avance la copa.'
-      });
-    }
-    prevMatches = nextMatches;
-    rounds.push({
-      name:getCupRoundName(prevMatches.length),
-      short:nextShort,
-      matches:prevMatches
-    });
-  }
-
-  return {
-    bracketSize,
-    qualifiedTeams:seededTeams.length,
-    hasByes:seededTeams.length < bracketSize,
-    stageLabel:rounds[0]?.name || 'Copa',
-    leader:seededTeams[0] || null,
-    rounds,
-    seeds:seededTeams
-  };
+  const CUP_QUALIFY = 6;
+  const seededTeams = tabla.slice(0, Math.min(tabla.length, CUP_QUALIFY)).map((t,i)=>({...t, seed:i+1}));
+  const s = (n) => seededTeams.find(t=>t.seed===n) || null;
+  // Cuartos
+  const q1 = { id:'q1', slotA:createCupSlot(s(3),3,s(3)?s(3).nombre:'3°',{}), slotB:createCupSlot(s(6),6,s(6)?s(6).nombre:'6°',{}), winner:null, winnerLabel:'Ganador CF1', note:`${s(3)?.nombre||'3°'} vs ${s(6)?.nombre||'6°'}` };
+  const q2 = { id:'q2', slotA:createCupSlot(s(4),4,s(4)?s(4).nombre:'4°',{}), slotB:createCupSlot(s(5),5,s(5)?s(5).nombre:'5°',{}), winner:null, winnerLabel:'Ganador CF2', note:`${s(4)?.nombre||'4°'} vs ${s(5)?.nombre||'5°'}` };
+  const r1 = { name:'Cuartos de Final', short:'CF', matches:[q1, q2] };
+  // Semifinales (2° y 1° esperan al ganador de CF)
+  const sf1 = { id:'sf1', slotA:createCupSlot(q1.winner,q1.winner?.seed||null,q1.winnerLabel,{subtitle:q1.winner?`Seed ${q1.winner.seed}`:'Ganador CF1'}), slotB:createCupSlot(s(2),2,s(2)?s(2).nombre:'2°',{}), winner:null, winnerLabel:'Ganador SF1', note:`${q1.winnerLabel} vs ${s(2)?.nombre||'2°'}` };
+  const sf2 = { id:'sf2', slotA:createCupSlot(q2.winner,q2.winner?.seed||null,q2.winnerLabel,{subtitle:q2.winner?`Seed ${q2.winner.seed}`:'Ganador CF2'}), slotB:createCupSlot(s(1),1,s(1)?s(1).nombre:'1°',{}), winner:null, winnerLabel:'Ganador SF2', note:`${q2.winnerLabel} vs ${s(1)?.nombre||'1°'}` };
+  const r2 = { name:'Semifinales', short:'SF', matches:[sf1, sf2] };
+  // Final
+  const fin = { id:'final', slotA:createCupSlot(sf1.winner,sf1.winner?.seed||null,sf1.winnerLabel,{subtitle:sf1.winner?`Seed ${sf1.winner.seed}`:'Ganador SF1'}), slotB:createCupSlot(sf2.winner,sf2.winner?.seed||null,sf2.winnerLabel,{subtitle:sf2.winner?`Seed ${sf2.winner.seed}`:'Ganador SF2'}), winner:null, winnerLabel:'Campeón', note:'Gran Final' };
+  const r3 = { name:'Final', short:'F', matches:[fin] };
+  const rounds = [r1, r2, r3];
+  const eliminated = tabla.slice(CUP_QUALIFY).map((t,i)=>({...t, seed:CUP_QUALIFY+i+1}));
+  return { bracketSize:4, qualifiedTeams:seededTeams.length, hasByes:false, stageLabel:'Cuartos de Final', leader:seededTeams[0]||null, rounds, seeds:seededTeams, eliminated };
 }
 
 function renderBracketSlot(slot, adminMode=false){
@@ -4207,10 +4221,44 @@ function renderTabla(){
   renderGoleadores();
 }
 
+// ── VUELTA STATE ──────────────────────────────────────────
+let currentVuelta = 'general'; // 'general' | 'v1' | 'v2'
+
+function selectVuelta(vuelta, btn){
+  currentVuelta = vuelta;
+  document.querySelectorAll('#vueltaTabs .cat-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderTabla();
+}
+
+function getTablaForVuelta(){
+  if(currentVuelta === 'v1') return buildTablaVuelta(1);
+  if(currentVuelta === 'v2') return buildTablaVuelta(2);
+  return buildTablaData(); // general
+}
+
+function getVueltaLabel(){
+  if(currentVuelta === 'v1') return 'Vuelta 1 (Jornadas 1–6)';
+  if(currentVuelta === 'v2') return 'Vuelta 2 (Jornadas 7–12)';
+  return null;
+}
+
 function renderTabla(){
   const body=document.getElementById('tablaBody'); if(!body)return;
-  const data=buildTablaData();
-  const cupData=buildCupProjectionData(data);
+  // Usar tabla filtrada por vuelta si corresponde
+  const data = getTablaForVuelta ? getTablaForVuelta() : buildTablaData();
+  // Banner de vuelta
+  const vueltaBanner = document.getElementById('vueltaInfoBanner');
+  const vueltaLabel = getVueltaLabel ? getVueltaLabel() : null;
+  if(vueltaBanner){
+    if(vueltaLabel){
+      vueltaBanner.style.display='';
+      vueltaBanner.innerHTML=`📅 Mostrando: <strong>${vueltaLabel}</strong> — ${data.length ? data[0].nombre+' lidera con '+data[0].pts+' pts' : 'Sin partidos registrados aún'}`;
+    } else {
+      vueltaBanner.style.display='none';
+    }
+  }
+  const cupData=buildCupProjectionData(buildTablaData()); // copa siempre usa tabla general
   const fbBanner=document.getElementById('finalissimaBanner');
   const finalissimaSection=document.getElementById('finalissimaSection');
   if(fbBanner && cupData){
@@ -4240,7 +4288,7 @@ function renderTabla(){
             <span style="font-size:24px;">🏆</span>
             <div>
               <div class="bracket-title">CUADRO DE COPA</div>
-              <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;margin-top:2px;">Top 8 · Eliminación Directa</div>
+              <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;margin-top:2px;">Top 6 · Cuartos → SF → Final</div>
             </div>
           </div>
           ${adminChipsHtml}
@@ -6723,7 +6771,7 @@ function compartirCopa(){
           <div>
             <div style="font-size:13px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#2563eb;margin-bottom:5px;">${escapeHtml(torneo)}</div>
             <div style="font-family:'Bebas Neue',sans-serif;font-size:88px;letter-spacing:2px;line-height:.86;color:#0f172a;">CUADRO DE COPA</div>
-            <div style="font-size:18px;font-weight:800;color:#334155;margin-top:9px;letter-spacing:.5px;">${escapeHtml(cat)} &nbsp;·&nbsp; Top 8 &nbsp;·&nbsp; Eliminación Directa</div>
+            <div style="font-size:18px;font-weight:800;color:#334155;margin-top:9px;letter-spacing:.5px;">${escapeHtml(cat)} &nbsp;·&nbsp; Top 6 &nbsp;·&nbsp; Cuartos · SF · Final</div>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;margin-top:6px;">
@@ -7319,7 +7367,7 @@ function getStatsSharePayloadBase(tipo, dataOverride=null){
       html: buildVisualShareCard({
         kicker: torneo,
         title: 'CUADRO DE COPA',
-        subtitle: `${categoria} · ${organizerLine} · Top 8 equipos · Bracket completo`,
+        subtitle: `${categoria} · ${organizerLine} · Top 6 equipos · CF · SF · Final`,
         dateLabel: `Actualizado · ${fecha}`,
         bodyHtml,
         footerNote: 'Visual oficial del camino al título — bracket completo según tabla actual.',
