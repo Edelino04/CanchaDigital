@@ -1166,7 +1166,9 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
   <!-- Category tabs -->
   <div class="cat-tabs" id="catTabsContainer">
     <button class="cat-tab active" onclick="selectCat('liga_alta',this)">CATEGORÍA LIBRE VARONIL</button>
-    <button class="cat-tab" onclick="selectCat('libre_femenil',this)">CATEGORÍA LIBRE DOMINICAL</button>
+    <button class="cat-tab" onclick="selectCat('cat_infantil',this)">CATEGORÍA INFANTIL</button>
+    <button class="cat-tab" onclick="selectCat('cat_juvenil_a',this)">CATEGORÍA JUVENIL A</button>
+    <button class="cat-tab" onclick="selectCat('cat_juvenil_b',this)">CATEGORÍA JUVENIL B</button>
     <button class="cat-tab" id="catTab_baja_a" onclick="selectCat('liga_baja_a',this)" style="display:none">Liga Baja A</button>
     <button class="cat-tab" id="catTab_baja_b" onclick="selectCat('liga_baja_b',this)" style="display:none">Liga Baja B</button>
     <button id="catAddBtn" onclick="openAddCatInline()" style="display:none;background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.5);padding:0 12px;cursor:pointer;font-size:18px;flex-shrink:0;line-height:36px" title="Agregar categoría">＋</button>
@@ -1324,9 +1326,19 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
     <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#ca8a04,#2ea83c,#4d7ef5);border-radius:24px 24px 0 0;"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(77,126,245,.22),transparent 55%);pointer-events:none;"></div>
     <div style="font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(253,224,71,.9);margin-bottom:6px;position:relative;z-index:1;">⚽ Torneo Los Alamitos · Fútbol 7</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;color:#fff;line-height:.95;position:relative;z-index:1;">Reglamento<br>& Premios</div>
+    <div id="reglHeroTitle" style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;color:#fff;line-height:.95;position:relative;z-index:1;">Reglamento<br>& Premios</div>
     <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.65);margin-top:8px;line-height:1.55;position:relative;z-index:1;">Unidad Deportiva Los Alamitos · Cancha de Pasto Natural</div>
   </div>
+
+  <!-- Placeholder para categorías sin reglamento -->
+  <div id="reglPlaceholder" style="display:none;text-align:center;padding:40px 20px;">
+    <div style="font-size:52px;margin-bottom:16px;">🚧</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--text);margin-bottom:8px;">Reglamento en construcción</div>
+    <div style="font-size:12px;color:var(--muted);font-weight:600;line-height:1.65;">El reglamento de esta categoría estará disponible próximamente.</div>
+  </div>
+
+  <!-- Contenido exclusivo CATEGORÍA LIBRE VARONIL -->
+  <div id="reglContentLigaAlta">
 
   <!-- FORMATO DE COMPETENCIA -->
   <div class="sh"><div class="st">🏟️ Formato de Competencia</div><div class="sl"></div></div>
@@ -1364,34 +1376,31 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#ca8a04,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🥊</div>
       <div>
         <div style="font-size:13px;font-weight:900;color:var(--text);">B) Fase Copa (Liguilla)</div>
-        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">6 Clasificados · Eliminación directa</div>
+        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">8 Clasificados · Cuartos · Semis · Final</div>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Clasifican los <strong>6 primeros equipos</strong>. El 7° queda eliminado. Formato de eliminación directa:</p>
+    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Clasifican los <strong>8 primeros equipos</strong> al término de las 2 vueltas. Formato de eliminación directa en 3 rondas:</p>
     <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
-      <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(202,138,4,.12),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.25);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:14px;">🏅</span>
-        <span style="font-size:11px;font-weight:900;color:#ca8a04;white-space:nowrap;">1° y 2°</span>
+      <div style="background:linear-gradient(90deg,rgba(202,138,4,.1),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.3);border-radius:10px;padding:9px 12px;">
+        <div style="font-size:10px;font-weight:900;letter-spacing:1px;color:#ca8a04;text-transform:uppercase;margin-bottom:6px;">🏆 Cuartos de Final</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">1° vs 8°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">2° vs 7°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">3° vs 6°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">4° vs 5°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
+        <span style="font-size:14px;">⚔️</span>
+        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">Semifinales</span>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Los 4 ganadores de cuartos</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(202,138,4,.08),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.2);border-radius:10px;padding:9px 12px;">
+        <span style="font-size:14px;">🏆</span>
+        <span style="font-size:11px;font-weight:900;color:#ca8a04;white-space:nowrap;">Gran Final</span>
         <div style="flex:1;height:1px;background:rgba(202,138,4,.2);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Pasan directo a Semifinal</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:14px;">⚔️</span>
-        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">3° vs 6°</span>
-        <div style="flex:1;height:1px;background:var(--border);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Ganador enfrenta al 2°</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:14px;">⚔️</span>
-        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">4° vs 5°</span>
-        <div style="flex:1;height:1px;background:var(--border);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Ganador enfrenta al 1°</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.18);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:14px;">❌</span>
-        <span style="font-size:11px;font-weight:900;color:var(--red);white-space:nowrap;">7°</span>
-        <div style="flex:1;height:1px;background:rgba(220,38,38,.15);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Eliminado directamente</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Los 2 ganadores de semis</span>
       </div>
     </div>
     <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:11px;color:var(--text2);font-weight:600;line-height:1.6;">
@@ -1571,6 +1580,8 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
     <p style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.65;">Todos los participantes juegan <strong>bajo su propio riesgo</strong>, deslindando a la organización de cualquier responsabilidad por lesiones o accidentes ocurridos durante el torneo.</p>
   </div>
 
+  </div><!-- /reglContentLigaAlta -->
+
 </div>
 <!-- FIN REGLAMENTO -->
 <!-- ═══════ TIENDA ═══════ -->
@@ -1745,7 +1756,6 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
         <div class="ai-param-lbl">📋 Categoría</div>
         <select class="ai-fi" id="gen_cat" onchange="genUpdateEquipos()">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
       <div class="ai-param-row">
@@ -2020,7 +2030,6 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="mp_cat" onchange="updateMPEquipos()">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2252,7 +2261,6 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="eq_cat">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2335,7 +2343,6 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="ie_cat">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2467,7 +2474,6 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       </div>
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="temp_cat">
-          <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option><option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2814,11 +2820,13 @@ delete TORNEO_NAMES.musala;
 TORNEO_LOGOS.villa = LOS_ALAMITOS_LOGO;
 TORNEO_LOGOS.musala = LOS_ALAMITOS_LOGO;
 CAT_NAMES.liga_alta = 'CATEGORÍA LIBRE VARONIL';
-CAT_NAMES.libre_femenil = 'CATEGORÍA LIBRE DOMINICAL';
-// CAT_NAMES.liga_media removed (38+ eliminado)
+CAT_NAMES.cat_infantil = 'CATEGORÍA INFANTIL';
+CAT_NAMES.cat_juvenil_a = 'CATEGORÍA JUVENIL A';
+CAT_NAMES.cat_juvenil_b = 'CATEGORÍA JUVENIL B';
+delete CAT_NAMES.liga_media;
 delete CAT_NAMES.liga_baja_a;
 delete CAT_NAMES.liga_baja_b;
-catOrderKeys = ['liga_alta','libre_femenil'];
+catOrderKeys = ['liga_alta','cat_infantil','cat_juvenil_a','cat_juvenil_b'];
 const splashMainLogoOnLoad = document.querySelector('#splash > div img');
 if(splashMainLogoOnLoad) splashMainLogoOnLoad.src = SPLASH_BIG_LOGO;
 const hdrBrandLogoOnLoad = document.querySelector('.hdr-shield img');
@@ -3158,6 +3166,7 @@ function launchApp(){
   if(hdrLogoEl) hdrLogoEl.src = TORNEO_LOGOS[currentTorneo];
   syncFixedSelectors();
   loadCustomCats();
+  rebuildCatTabs();
   updateCatTabs();
   loadTiendaToggle();
   document.getElementById('mp_torneo').value = currentTorneo;
@@ -3410,6 +3419,26 @@ function selectCat(cat, btn){
   updatePorterosPublicUI();
   updateCuadroCopaUI();
   if(isAdmin) scheduleMarketingAutoSync('categoria');
+  updateReglamentoVisibility();
+}
+
+function updateReglamentoVisibility(){
+  const content = document.getElementById('reglContentLigaAlta');
+  const placeholder = document.getElementById('reglPlaceholder');
+  const heroTitle = document.getElementById('reglHeroTitle');
+  if(!content || !placeholder) return;
+  if(currentCat === 'liga_alta'){
+    content.style.display = '';
+    placeholder.style.display = 'none';
+    if(heroTitle) heroTitle.innerHTML = 'Reglamento<br>\& Premios';
+  } else {
+    content.style.display = 'none';
+    placeholder.style.display = '';
+    if(heroTitle){
+      const catName = (typeof CAT_NAMES !== 'undefined' ? CAT_NAMES[currentCat] : '') || currentCat;
+      heroTitle.textContent = catName;
+    }
+  }
 }
 
 const isPageActive = p => document.getElementById('page-'+p)?.classList.contains('active');
@@ -3861,29 +3890,31 @@ function createCupSlot(team, seed=null, fallbackLabel='Por definirse', opts={}){
 }
 
 function buildCupProjectionData(dataOverride=null){
-  // FORMATO TORNEO LOS ALAMITOS: 7 equipos, TOP 6 clasifican, 7mo eliminado
-  // Cuartos: 3° vs 6°, 4° vs 5°
-  // Semifinal: Gan(3v6) vs 2°, Gan(4v5) vs 1°
+  // FORMATO TORNEO LOS ALAMITOS: TOP 8 clasifican
+  // Cuartos de Final: 1°vs8°, 2°vs7°, 3°vs6°, 4°vs5°
+  // Semifinal: Gan(1v8) vs Gan(4v5), Gan(2v7) vs Gan(3v6)
   // Final: Gan SF1 vs Gan SF2
   const tabla = Array.isArray(dataOverride) && dataOverride.length ? dataOverride.slice() : buildTablaData();
   if(tabla.length < 2) return null;
-  const CUP_QUALIFY = 6;
+  const CUP_QUALIFY = 8;
   const seededTeams = tabla.slice(0, Math.min(tabla.length, CUP_QUALIFY)).map((t,i)=>({...t, seed:i+1}));
   const s = (n) => seededTeams.find(t=>t.seed===n) || null;
-  // Cuartos
-  const q1 = { id:'q1', slotA:createCupSlot(s(3),3,s(3)?s(3).nombre:'3°',{}), slotB:createCupSlot(s(6),6,s(6)?s(6).nombre:'6°',{}), winner:null, winnerLabel:'Ganador CF1', note:`${s(3)?.nombre||'3°'} vs ${s(6)?.nombre||'6°'}` };
-  const q2 = { id:'q2', slotA:createCupSlot(s(4),4,s(4)?s(4).nombre:'4°',{}), slotB:createCupSlot(s(5),5,s(5)?s(5).nombre:'5°',{}), winner:null, winnerLabel:'Ganador CF2', note:`${s(4)?.nombre||'4°'} vs ${s(5)?.nombre||'5°'}` };
-  const r1 = { name:'Cuartos de Final', short:'CF', matches:[q1, q2] };
-  // Semifinales (2° y 1° esperan al ganador de CF)
-  const sf1 = { id:'sf1', slotA:createCupSlot(q1.winner,q1.winner?.seed||null,q1.winnerLabel,{subtitle:q1.winner?`Seed ${q1.winner.seed}`:'Ganador CF1'}), slotB:createCupSlot(s(2),2,s(2)?s(2).nombre:'2°',{}), winner:null, winnerLabel:'Ganador SF1', note:`${q1.winnerLabel} vs ${s(2)?.nombre||'2°'}` };
-  const sf2 = { id:'sf2', slotA:createCupSlot(q2.winner,q2.winner?.seed||null,q2.winnerLabel,{subtitle:q2.winner?`Seed ${q2.winner.seed}`:'Ganador CF2'}), slotB:createCupSlot(s(1),1,s(1)?s(1).nombre:'1°',{}), winner:null, winnerLabel:'Ganador SF2', note:`${q2.winnerLabel} vs ${s(1)?.nombre||'1°'}` };
+  // Cuartos de Final
+  const q1 = { id:'q1', slotA:createCupSlot(s(1),1,s(1)?s(1).nombre:'1°',{}), slotB:createCupSlot(s(8),8,s(8)?s(8).nombre:'8°',{}), winner:null, winnerLabel:'Ganador CF1', note:`${s(1)?.nombre||'1°'} vs ${s(8)?.nombre||'8°'}` };
+  const q2 = { id:'q2', slotA:createCupSlot(s(2),2,s(2)?s(2).nombre:'2°',{}), slotB:createCupSlot(s(7),7,s(7)?s(7).nombre:'7°',{}), winner:null, winnerLabel:'Ganador CF2', note:`${s(2)?.nombre||'2°'} vs ${s(7)?.nombre||'7°'}` };
+  const q3 = { id:'q3', slotA:createCupSlot(s(3),3,s(3)?s(3).nombre:'3°',{}), slotB:createCupSlot(s(6),6,s(6)?s(6).nombre:'6°',{}), winner:null, winnerLabel:'Ganador CF3', note:`${s(3)?.nombre||'3°'} vs ${s(6)?.nombre||'6°'}` };
+  const q4 = { id:'q4', slotA:createCupSlot(s(4),4,s(4)?s(4).nombre:'4°',{}), slotB:createCupSlot(s(5),5,s(5)?s(5).nombre:'5°',{}), winner:null, winnerLabel:'Ganador CF4', note:`${s(4)?.nombre||'4°'} vs ${s(5)?.nombre||'5°'}` };
+  const r1 = { name:'Cuartos de Final', short:'CF', matches:[q1, q2, q3, q4] };
+  // Semifinales
+  const sf1 = { id:'sf1', slotA:createCupSlot(q1.winner,q1.winner?.seed||null,q1.winnerLabel,{subtitle:q1.winner?`Seed ${q1.winner.seed}`:'Ganador CF1'}), slotB:createCupSlot(q4.winner,q4.winner?.seed||null,q4.winnerLabel,{subtitle:q4.winner?`Seed ${q4.winner.seed}`:'Ganador CF4'}), winner:null, winnerLabel:'Ganador SF1', note:`${q1.winnerLabel} vs ${q4.winnerLabel}` };
+  const sf2 = { id:'sf2', slotA:createCupSlot(q2.winner,q2.winner?.seed||null,q2.winnerLabel,{subtitle:q2.winner?`Seed ${q2.winner.seed}`:'Ganador CF2'}), slotB:createCupSlot(q3.winner,q3.winner?.seed||null,q3.winnerLabel,{subtitle:q3.winner?`Seed ${q3.winner.seed}`:'Ganador CF3'}), winner:null, winnerLabel:'Ganador SF2', note:`${q2.winnerLabel} vs ${q3.winnerLabel}` };
   const r2 = { name:'Semifinales', short:'SF', matches:[sf1, sf2] };
   // Final
   const fin = { id:'final', slotA:createCupSlot(sf1.winner,sf1.winner?.seed||null,sf1.winnerLabel,{subtitle:sf1.winner?`Seed ${sf1.winner.seed}`:'Ganador SF1'}), slotB:createCupSlot(sf2.winner,sf2.winner?.seed||null,sf2.winnerLabel,{subtitle:sf2.winner?`Seed ${sf2.winner.seed}`:'Ganador SF2'}), winner:null, winnerLabel:'Campeón', note:'Gran Final' };
   const r3 = { name:'Final', short:'F', matches:[fin] };
   const rounds = [r1, r2, r3];
   const eliminated = tabla.slice(CUP_QUALIFY).map((t,i)=>({...t, seed:CUP_QUALIFY+i+1}));
-  return { bracketSize:4, qualifiedTeams:seededTeams.length, hasByes:false, stageLabel:'Cuartos de Final', leader:seededTeams[0]||null, rounds, seeds:seededTeams, eliminated };
+  return { bracketSize:8, qualifiedTeams:seededTeams.length, hasByes:false, stageLabel:'Cuartos de Final', leader:seededTeams[0]||null, rounds, seeds:seededTeams, eliminated };
 }
 
 function renderBracketSlot(slot, adminMode=false){
@@ -4207,7 +4238,7 @@ function renderTabla(){
     var fLbl={'W':'G','D':'E','L':'P'};
     const forma=t.forma.slice(-5).map(f=>`<div class="fp-${f.toLowerCase()}" title="${f==='W'?'Ganado':f==='L'?'Perdido':'Empate'}">${fLbl[f]||f}</div>`).join('');
     const logo=t.logo?`<img class="tc-logo" src="${t.logo}"/>`:`<div class="tc-ph">⚽</div>`;
-    var zc=pos===1?'pos-zone-champ':pos===2?'pos-zone-finalissima':pos<=2&&data.length>=4?'pos-zone-up':pos===data.length?'pos-zone-down':'';
+    var zc=pos===1?'pos-zone-champ':pos===2?'pos-zone-finalissima':pos<=8&&data.length>=4?'pos-zone-up':pos===data.length?'pos-zone-down':'';
     return `<tr class="${zc}">
       <td><span class="pos-num ${cls}">${pos}</span></td>
       <td class="tal"><div class="tc">${logo}<span class="tc-name">${t.nombre}</span></div></td>
@@ -10522,9 +10553,10 @@ function rebuildCatTabs(){
 function loadCustomCats(){
   Object.keys(CAT_NAMES).forEach(k=>delete CAT_NAMES[k]);
   CAT_NAMES.liga_alta = 'CATEGORÍA LIBRE VARONIL';
-  CAT_NAMES.libre_femenil = 'CATEGORÍA LIBRE DOMINICAL';
-  // CAT_NAMES.liga_media removed (38+ eliminado)
-  catOrderKeys = ['liga_alta','libre_femenil'];
+  CAT_NAMES.cat_infantil = 'CATEGORÍA INFANTIL';
+  CAT_NAMES.cat_juvenil_a = 'CATEGORÍA JUVENIL A';
+  CAT_NAMES.cat_juvenil_b = 'CATEGORÍA JUVENIL B';
+  catOrderKeys = ['liga_alta','cat_infantil','cat_juvenil_a','cat_juvenil_b'];
 }
 
 function saveCatOrder(){
